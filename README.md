@@ -13,4 +13,4 @@ Dumping ground for different deployment configs.
 - Chef
 
 ## Contributing
-If you have a favorite config that you use we would to include it here!
+If you have a favorite config that you use we would to love include it here! We are always looking for fresh pull requests.
