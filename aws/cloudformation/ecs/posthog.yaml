@@ -606,7 +606,7 @@ Resources:
               Value: Oh_PLz_chANGme
             - Name: DISABLE_SECURE_SSL_REDIRECT
               Value: Ref! 'DisableSecureSSLRedirect'
-            - Name: EMEAIL_HOST
+            - Name: EMAIL_HOST
               Value: Ref! 'SmtpHost'
             - Name: EMAIL_PORT
               Value: Ref! 'EmailPort'
