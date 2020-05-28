@@ -589,7 +589,7 @@ Resources:
           LogConfiguration:
             LogDriver: awslogs
             Options:
-              awslogs-region: us-east-1
+              awslogs-region: !Ref "AWS::Region" 
               awslogs-group: posthog
               awslogs-stream-prefix: posthog
           Image: !Ref 'ImageUrl'
