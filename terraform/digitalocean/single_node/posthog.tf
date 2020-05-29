@@ -37,10 +37,8 @@ resource "digitalocean_droplet" "posthog-solo" {
       "sudo apt-get -y install docker",
       "sudo curl -L \"https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)\" -o /usr/local/bin/docker-compose",
       "sudo chmod +x /usr/local/bin/docker-compose",
-      "git clone https://github.com/PostHog/posthog.git",
-      "cd posthog",
-      "git fetch",
-      "git checkout do",
+      "git clone https://github.com/PostHog/deployment.git",
+      "cd deployment/terraform/digitalocean/single_node/",
       "docker-compose -f docker-compose.do.yml up -d"
     ]
   }
