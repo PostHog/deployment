@@ -8,10 +8,10 @@ resource "random_string" "random" {
   override_special = "/@£$"
 }
 
-resource "digitalocean_droplet" "posthog-1" {
+resource "digitalocean_droplet" "posthog-solo" {
   image              = "ubuntu-18-04-x64"
-  name               = "posthog-1"
-  tags               = ["posthog"]
+  name               = "posthog-solo"
+  tags               = ["posthog-solo"]
   region             = var.region
   size               = "s-1vcpu-1gb"
   private_networking = true
@@ -50,7 +50,7 @@ resource "digitalocean_droplet" "posthog-1" {
 resource "digitalocean_firewall" "posthog" {
   name = "only-22-80-and-443"
 
-  droplet_ids = [digitalocean_droplet.posthog-1.id]
+  droplet_ids = [digitalocean_droplet.posthog-solo.id]
 
   inbound_rule {
     protocol         = "tcp"

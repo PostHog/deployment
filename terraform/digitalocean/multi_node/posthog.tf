@@ -35,7 +35,7 @@ resource "digitalocean_droplet" "posthog-1" {
       "sudo apt-get update",
       "sudo apt -y install docker-ce",
       "sudo apt-get -y install docker",
-      "docker run -t -i --restart always --publish 8000:8000 -e IS_DOCKER=true -e DISABLE_SECURE_SSL_REDIRECT=1 -e SECRET_KEY=${random_string.random.result} -e DATABASE_URL=postgres://${digitalocean_database_cluster.postgres-posthog.user}:${digitalocean_database_cluster.postgres-posthog.password}@${digitalocean_database_cluster.postgres-posthog.private_host}:${digitalocean_database_cluster.postgres-posthog.port}/${digitalocean_database_cluster.postgres-posthog.database} -e REDIS_URL=redis://${digitalocean_database_cluster.redis-posthog.private_host}:${digitalocean_database_cluster.redis-posthog.port} posthog/posthog:latest"
+      "docker run -t -i --restart always --publish 8000:8000 -e IS_DOCKER=true -e DISABLE_SECURE_SSL_REDIRECT=1 -e SECRET_KEY=${random_string.random.result} -e DATABASE_URL=postgres://${digitalocean_database_cluster.postgres-posthog.user}:${digitalocean_database_cluster.postgres-posthog.password}@${digitalocean_database_cluster.postgres-posthog.private_host}:${digitalocean_database_cluster.postgres-posthog.port}/${digitalocean_database_cluster.postgres-posthog.database} -e REDIS_URL=rediss://${digitalocean_database_cluster.redis-posthog.user}:${digitalocean_database_cluster.redis-posthog.password}@${digitalocean_database_cluster.redis-posthog.private_host}:${digitalocean_database_cluster.redis-posthog.port} posthog/posthog:latest"
     ]
   }
 }
@@ -60,6 +60,8 @@ resource "digitalocean_droplet" "posthog-2" {
   }
   provisioner "remote-exec" {
     inline = [
+      # this is just to stagger the deploys so posthog1 gets to do the migrations 
+      "echo ${digitalocean_droplet.posthog-1.ipv4_address}",
       "export PATH=$PATH:/usr/bin",
       "sudo apt -y install apt-transport-https ca-certificates curl software-properties-common",
       "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -",
@@ -67,7 +69,7 @@ resource "digitalocean_droplet" "posthog-2" {
       "sudo apt-get update",
       "sudo apt -y install docker-ce",
       "sudo apt-get -y install docker",
-      "docker run -t -i --restart always --publish 8000:8000 -e IS_DOCKER=true -e DISABLE_SECURE_SSL_REDIRECT=1 -e SECRET_KEY=${random_string.random.result} -e DATABASE_URL=postgres://${digitalocean_database_cluster.postgres-posthog.user}:${digitalocean_database_cluster.postgres-posthog.password}@${digitalocean_database_cluster.postgres-posthog.private_host}:${digitalocean_database_cluster.postgres-posthog.port}/${digitalocean_database_cluster.postgres-posthog.database} -e REDIS_URL=redis://${digitalocean_database_cluster.redis-posthog.private_host}:${digitalocean_database_cluster.redis-posthog.port} posthog/posthog:latest"
+      "docker run -t -i --restart always --publish 8000:8000 -e IS_DOCKER=true -e DISABLE_SECURE_SSL_REDIRECT=1 -e SECRET_KEY=${random_string.random.result} -e DATABASE_URL=postgres://${digitalocean_database_cluster.postgres-posthog.user}:${digitalocean_database_cluster.postgres-posthog.password}@${digitalocean_database_cluster.postgres-posthog.private_host}:${digitalocean_database_cluster.postgres-posthog.port}/${digitalocean_database_cluster.postgres-posthog.database} -e REDIS_URL=rediss://${digitalocean_database_cluster.redis-posthog.user}:${digitalocean_database_cluster.redis-posthog.password}@${digitalocean_database_cluster.redis-posthog.private_host}:${digitalocean_database_cluster.redis-posthog.port} posthog/posthog:latest"
     ]
   }
 }
