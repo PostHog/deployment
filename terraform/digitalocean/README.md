@@ -9,7 +9,7 @@ This installation gets you started up with a scalable end to end infrastructure 
 - 2 x 1GB/1CPU Droplet @ \$5
 - 1 x 1GB/1CPU Postgres @ \$15
 - 1 x 0.7GB/1CPU Redis @ \$15
-- Total Cost per Month ≈ \$40
+- **Total Cost per Month ≈ \$40**
 
 ## Single-Node install
 
@@ -18,11 +18,13 @@ This is a basic setup for trialing Posthog. It won't scale much but it definitel
 ### Cost
 
 - 1 x 1GB/1CPU Droplet @ \$5
-- Total Cost per Month ≈ \$5
+- **Total Cost per Month ≈ \$5**
 
 ## Quickstart
 
 DigitalOcean has a great [tutorial](https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean) on how to get started with Terraform on their platform. We borrow heavily from their excellent documents here
+
+Make sure you have the [Terraform tool](https://learn.hashicorp.com/terraform/getting-started/install.html) installed.
 
 ### Step 1 — Configuring your Environment
 
@@ -32,7 +34,7 @@ Terraform will use your DigitalOcean Personal Access Token to communicate with t
 export DO_PAT={YOUR_PERSONAL_ACCESS_TOKEN}
 ```
 
-Next, you’ll need the MD5 fingerprint of the public key you’ve associated with your account, so Terraform can add it to each machine it provisions. Assuming that your private key is located at ~/.ssh/id_rsa, use the following command to get the MD5 fingerprint of your public key:
+Next, you’ll need the MD5 fingerprint of the _public key you’ve associated with your account_, so Terraform can add it to each machine it provisions. Assuming that your private key is located at ~/.ssh/id_rsa, use the following command to get the MD5 fingerprint of your public key:
 
 ```bash
 ssh-keygen -E md5 -lf ~/.ssh/id_rsa.pub | awk '{print $2}'
