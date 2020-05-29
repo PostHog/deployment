@@ -1,5 +1,5 @@
 #!/bin/bash
-terraform apply \
+terraform destroy \
   -var "do_token=${DO_PAT}" \
   -var "pub_key=$HOME/.ssh/id_rsa.pub" \
   -var "pvt_key=$HOME/.ssh/id_rsa" \

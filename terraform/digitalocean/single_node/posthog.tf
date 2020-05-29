@@ -35,11 +35,13 @@ resource "digitalocean_droplet" "posthog-1" {
       "sudo apt-get update",
       "sudo apt -y install docker-ce",
       "sudo apt-get -y install docker",
-      "sudo curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)\" -o /usr/local/bin/docker-compose",
+      "sudo curl -L \"https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)\" -o /usr/local/bin/docker-compose",
       "sudo chmod +x /usr/local/bin/docker-compose",
       "git clone https://github.com/PostHog/posthog.git",
       "cd posthog",
-      "docker-compose -f docker-compose.yml up -d" 
+      "git fetch",
+      "git checkout do",
+      "docker-compose -f docker-compose.do.yml up -d"
     ]
   }
 }
@@ -53,7 +55,7 @@ resource "digitalocean_firewall" "posthog" {
   inbound_rule {
     protocol         = "tcp"
     port_range       = "22"
-    source_addresses = ["192.168.1.0/24", "2002:1:2::/48"]
+    source_addresses = ["0.0.0.0/0", "::/0"]
   }
 
   inbound_rule {
