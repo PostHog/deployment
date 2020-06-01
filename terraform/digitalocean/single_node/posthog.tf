@@ -9,7 +9,7 @@ resource "random_string" "random" {
 }
 
 resource "digitalocean_droplet" "posthog-solo" {
-  image              = "ubuntu-18-04-x64"
+  image              = "docker-18-04"
   name               = "posthog-solo"
   tags               = ["posthog-solo"]
   region             = var.region
@@ -29,16 +29,9 @@ resource "digitalocean_droplet" "posthog-solo" {
   provisioner "remote-exec" {
     inline = [
       "export PATH=$PATH:/usr/bin",
-      "sudo apt -y install apt-transport-https ca-certificates curl software-properties-common",
-      "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -",
-      "sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable\"",
-      "sudo apt-get update",
-      "sudo apt -y install docker-ce",
-      "sudo apt-get -y install docker",
-      "sudo curl -L \"https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)\" -o /usr/local/bin/docker-compose",
-      "sudo chmod +x /usr/local/bin/docker-compose",
+      "sudo apt -y install apt-transport-https ca-certificates curl git software-properties-common",
       "git clone https://github.com/PostHog/deployment.git",
-      "cd deployment/terraform/digitalocean/single_node/",
+      "cd deployment/terraform/digitalocean/single_node",
       "docker-compose -f docker-compose.do.yml up -d"
     ]
   }
