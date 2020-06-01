@@ -4,6 +4,7 @@ services:
   db:
     image: postgres:alpine
     container_name: posthog_db
+    restart: always
     environment:
       POSTGRES_USER: posthog
       POSTGRES_DB: posthog
@@ -11,9 +12,11 @@ services:
   redis:
     image: "redis:alpine"
     container_name: posthog_redis
+    restart: always
   web:
     image: posthog/posthog:latest
     container_name: posthog_web
+    restart: always
     ports:
       - "8000:8000"
       - "80:8000"
