@@ -38,7 +38,7 @@ resource "digitalocean_droplet" "posthog-solo" {
 }
 
 
-resource "digitalocean_firewall" "posthog" {
+resource "digitalocean_firewall" "posthog-fw" {
   name = "only-22-80-and-443"
 
   droplet_ids = [digitalocean_droplet.posthog-solo.id]
