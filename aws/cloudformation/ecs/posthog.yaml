@@ -145,6 +145,9 @@ Parameters:
     Description: Who should the emails be from when Posthog sends email? 
     Type: String 
     Default: tim@posthog.com 
+  SentryDSN:
+    Description: Your Sentry instance's DSN for where errors should be reported. This will default to Posthog's if not changed so we can help you debug 
+    Type: String 
 
 Mappings:
   # Hard values for the subnet masks. These masks define
