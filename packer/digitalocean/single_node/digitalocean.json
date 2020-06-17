@@ -1,10 +1,10 @@
 {
   "variables": {
-    "api_token": "{{env `DIGITAL_OCEAN`}}",
+    "api_token": "{{env `DIGITALOCEAN_TOKEN`}}",
     "image": "docker-18-04",
     "region": "nyc3",
-    "size": "512mb",
-    "tag": "Latest",
+    "size": "s-1vcpu-1gb",
+    "tag": "{{timestamp}}",
     "ssh_username": "root"
   },
   "builders": [
@@ -22,11 +22,20 @@
     {
       "type": "shell",
       "inline": [
-        "sudo apt-get update",
-        "sudo apt -y install apt-transport-https ca-certificates curl git gnupg-agent software-properties-common",
+        "cloud-init status --wait",
+        "apt -qqy update",
+        "apt -qqy -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' full-upgrade",
+        "apt -qqy -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' install apt-transport-https ca-certificates curl git gnupg-agent software-properties-common",
         "git clone https://github.com/PostHog/deployment.git",
         "cd deployment/terraform/digitalocean/single_node",
         "sudo docker-compose -f docker-compose.do.yml up -d"
+      ]
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "../scripts/90-cleanup.sh",
+        "../scripts/99-img_check.sh"
       ]
     }
   ]
