@@ -7,15 +7,6 @@ Description: This stack deploys a Fargate cluster that is in a VPC with both
              the private subnet, which can be used for private internal traffic
              between internal services. Specificaly for Posthog <3
 Parameters:
-  StackName:
-    Type: String
-    Default: posthog
-    Description: The name of the parent Fargate networking stack that you created. Necessary
-                 to locate and reference resources created by that stack.
-  ServiceName:
-    Type: String
-    Default: posthog 
-    Description: A name for the service
   ImageUrl:
     Type: String
     Default: posthog/posthog:latest 
@@ -145,6 +136,9 @@ Parameters:
     Description: Who should the emails be from when Posthog sends email? 
     Type: String 
     Default: tim@posthog.com 
+  SentryDSN:
+    Description: Your Sentry instance's DSN for where errors should be reported. This will default to Posthog's if not changed so we can help you debug 
+    Type: String 
 
 Mappings:
   # Hard values for the subnet masks. These masks define
@@ -414,7 +408,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
       HealthCheckIntervalSeconds: 60
-      HealthCheckPath: /_health
+      HealthCheckPath: /_health/
       HealthCheckProtocol: HTTP
       HealthCheckTimeoutSeconds: 10 
       HealthyThresholdCount: 10
@@ -469,7 +463,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
       HealthCheckIntervalSeconds: 60
-      HealthCheckPath: /_health
+      HealthCheckPath: /_health/
       HealthCheckProtocol: HTTP
       HealthCheckTimeoutSeconds: 10
       HealthyThresholdCount: 5
@@ -561,14 +555,14 @@ Resources:
   LogGroup:
     Type: AWS::Logs::LogGroup
     Properties: 
-      LogGroupName: posthog 
+      LogGroupName: !Ref 'AWS::StackName'
       RetentionInDays: 7 
   # The task definition. This is a simple metadata description of what
   # container to run, and what resource requirements it has.
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
-      Family: !Ref 'ServiceName'
+      Family: !Ref 'AWS::StackName'
       Cpu: !Ref 'ContainerCpu'
       Memory: !Ref 'ContainerMemory'
       NetworkMode: awsvpc
@@ -581,7 +575,7 @@ Resources:
           - !Ref 'Role'
           - !Ref "AWS::NoValue"
       ContainerDefinitions:
-        - Name: !Ref 'ServiceName'
+        - Name: !Ref 'AWS::StackName'
           Command:
             - "./bin/docker"
           Cpu: !Ref 'ContainerCpu'
@@ -590,8 +584,8 @@ Resources:
             LogDriver: awslogs
             Options:
               awslogs-region: !Ref "AWS::Region" 
-              awslogs-group: posthog
-              awslogs-stream-prefix: posthog
+              awslogs-group: !Ref 'AWS::StackName' 
+              awslogs-stream-prefix: !Ref 'AWS::StackName' 
           Image: !Ref 'ImageUrl'
           PortMappings:
             - ContainerPort: !Ref 'ContainerPort'
@@ -630,10 +624,10 @@ Resources:
   PosthogDB:
     Type: 'AWS::RDS::DBCluster'
     Properties:
-      DatabaseName: posthog
+      DatabaseName: posthog 
       MasterUsername: posthog
       MasterUserPassword: posthogadmin 
-      DBClusterIdentifier: posthogDB 
+      DBClusterIdentifier: !Ref 'AWS::StackName' 
       Engine: aurora-postgresql
       EngineVersion: 10.7 
       EngineMode: serverless
@@ -645,6 +639,7 @@ Resources:
       VpcSecurityGroupIds:
         - !Ref 'FargateContainerSecurityGroup'
       DBSubnetGroupName: !Ref RDSSubnetGroup
+
   # The service. The service is a resource which allows you to run multiple
   # copies of a type of task, and gather up their logs and metrics, as well
   # as monitor the number of running tasks and replace any that have crashed
@@ -652,7 +647,7 @@ Resources:
     Type: AWS::ECS::Service
     DependsOn: LoadBalancerRule
     Properties:
-      ServiceName: !Ref 'ServiceName'
+      ServiceName: !Ref 'AWS::StackName'
       Cluster: !Ref 'ECSCluster'
       LaunchType: FARGATE
       DeploymentConfiguration:
@@ -669,7 +664,7 @@ Resources:
             - !Ref 'PublicSubnetTwo'
       TaskDefinition: !Ref 'TaskDefinition'
       LoadBalancers:
-        - ContainerName: !Ref 'ServiceName'
+        - ContainerName: !Ref 'AWS::StackName'
           ContainerPort: !Ref 'ContainerPort'
           TargetGroupArn: !Ref 'TargetGroup'
 
@@ -682,12 +677,12 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
       HealthCheckIntervalSeconds: 60
-      HealthCheckPath: /_health
+      HealthCheckPath: /_health/
       HealthCheckProtocol: HTTP
       HealthCheckTimeoutSeconds: 10
       HealthyThresholdCount: 10
       TargetType: ip
-      Name: !Ref 'ServiceName'
+      Name: !Ref 'AWS::StackName'
       Port: !Ref 'ContainerPort'
       Protocol: HTTP
       UnhealthyThresholdCount: 10
