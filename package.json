@@ -1,0 +1,14 @@
+{
+  "name": "posthog-deployment",
+  "version": "0.0.0-development",
+  "scripts": {
+    "semantic-release": "semantic-release"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PostHog/deployment.git"
+  },
+  "devDependencies": {
+    "semantic-release": "^17.1.0"
+  }
+}
