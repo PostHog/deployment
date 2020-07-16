@@ -118,14 +118,14 @@ Parameters:
     Description: SMTP Server Password 
     Type: String 
     Default: SuPeRSecret 
-  EmailUserTLS:
+  EmailUseTLS:
     Description: Using TLS for email? 
     Type: String 
     Default: false 
     AllowedValues:
       - true
       - false
-  EmailUserSSL:
+  EmailUseSSL:
     Description: Using SSL for email? 
     Type: String 
     Default: false 
