@@ -10,6 +10,7 @@ Dumping ground for different deployment configs.
 - Terraform
   - DigitalOcean - Single node install
   - DigitalOcean - Distributed with Redis, Posgres, Load Balancer, LetsEncrypt, SSL/TLS only
+- Linode - Single node install
 
 ## Deployments we would love to support:
 
