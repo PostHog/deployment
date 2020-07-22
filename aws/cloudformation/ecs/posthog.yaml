@@ -119,14 +119,14 @@ Parameters:
     Type: String 
     Default: SuPeRSecret 
   SmtpUseTLS:
-    Description: Using TLS for email? 
+    Description: Using TLS for email/smtp? 
     Type: String 
     Default: false 
     AllowedValues:
       - true
       - false
   SmtpUseSSL:
-    Description: Using SSL for email? 
+    Description: Using SSL for email/smtp? 
     Type: String 
     Default: false 
     AllowedValues:
