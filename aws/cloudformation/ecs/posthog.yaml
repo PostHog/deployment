@@ -102,33 +102,40 @@ Parameters:
     AllowedValues:
       - true
       - false
-  EmailHost:
+  SmtpHost:
     Description: SMTP Server to send emails from
     Type: String 
     Default: localhost 
-  EmailHost:
+  SmtpPort:
     Description: SMTP Server port to send emails from
     Type: Number 
     Default: 578 
-  EmailHostUser:
+  SmtpHostUser:
     Description: SMTP Server User
     Type: String 
     Default: EmailUser 
-  EmailHostPassword:
+  SmtpHostPassword:
     Description: SMTP Server Password 
     Type: String 
     Default: SuPeRSecret 
-  EmailUseTLS:
-    Description: Using TLS for email? 
+  SmtpUseTLS:
+    Description: Using TLS for email/smtp? 
     Type: String 
     Default: false 
     AllowedValues:
       - true
       - false
-  EmailUseSSL:
-    Description: Using SSL for email? 
+  SmtpUseSSL:
+    Description: Using SSL for email/smtp? 
     Type: String 
     Default: false 
+    AllowedValues:
+      - true
+      - false
+  DisableSecureSSLRedirect:
+    Description: Set this to false if you are going to be using SSL 
+    Type: String 
+    Default: true 
     AllowedValues:
       - true
       - false
@@ -603,15 +610,15 @@ Resources:
             - Name: EMAIL_HOST
               Value: !Ref 'SmtpHost'
             - Name: EMAIL_PORT
-              Value: !Ref 'EmailPort'
+              Value: !Ref 'SmtpPort'
             - Name: EMAIL_HOST_USER
-              Value: !Ref 'EmailHostUser'
+              Value: !Ref 'SmtpHostUser'
             - Name: EMAIL_HOST_PASSWORD
-              Value: !Ref 'EmailHostPassword'
+              Value: !Ref 'SmtpHostPassword'
             - Name: EMAIL_USE_TLS
-              Value: !Ref 'EmailUseTLS'
+              Value: !Ref 'SmtpUseTLS'
             - Name: EMAIL_USE_SSL
-              Value: !Ref 'EmailUseSSL'
+              Value: !Ref 'SmtpUseSSL'
             - Name: DEFAULT_FROM_EMAIL
               Value: !Ref 'DefaultFromEmail'
   RDSSubnetGroup:
