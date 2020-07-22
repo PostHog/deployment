@@ -599,21 +599,21 @@ Resources:
             - Name: SECRET_KEY
               Value: Oh_PLz_chANGme
             - Name: DISABLE_SECURE_SSL_REDIRECT
-              Value: Ref! 'DisableSecureSSLRedirect'
+              Value: !Ref 'DisableSecureSSLRedirect'
             - Name: EMAIL_HOST
-              Value: Ref! 'SmtpHost'
+              Value: !Ref 'SmtpHost'
             - Name: EMAIL_PORT
-              Value: Ref! 'EmailPort'
+              Value: !Ref 'EmailPort'
             - Name: EMAIL_HOST_USER
-              Value: Ref! 'EmailHostUser'
+              Value: !Ref 'EmailHostUser'
             - Name: EMAIL_HOST_PASSWORD
-              Value: Ref! 'EmailHostPassword'
+              Value: !Ref 'EmailHostPassword'
             - Name: EMAIL_USE_TLS
-              Value: Ref! 'EmailUseTLS'
+              Value: !Ref 'EmailUseTLS'
             - Name: EMAIL_USE_SSL
-              Value: Ref! 'EmailUseSSL'
+              Value: !Ref 'EmailUseSSL'
             - Name: DEFAULT_FROM_EMAIL
-              Value: Ref! 'DefaultFromEmail'
+              Value: !Ref 'DefaultFromEmail'
   RDSSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
     Properties:
