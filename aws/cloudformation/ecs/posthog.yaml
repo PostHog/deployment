@@ -102,11 +102,11 @@ Parameters:
     AllowedValues:
       - true
       - false
-  EmailHost:
+  SmtpHost:
     Description: SMTP Server to send emails from
     Type: String 
     Default: localhost 
-  EmailHost:
+  SmtpPort:
     Description: SMTP Server port to send emails from
     Type: Number 
     Default: 578 
@@ -129,6 +129,13 @@ Parameters:
     Description: Using SSL for email? 
     Type: String 
     Default: false 
+    AllowedValues:
+      - true
+      - false
+  DisableSecureSSLRedirect:
+    Description: Set this to false if you are going to be using SSL 
+    Type: String 
+    Default: true 
     AllowedValues:
       - true
       - false
@@ -603,7 +610,7 @@ Resources:
             - Name: EMAIL_HOST
               Value: !Ref 'SmtpHost'
             - Name: EMAIL_PORT
-              Value: !Ref 'EmailPort'
+              Value: !Ref 'SmtpPort'
             - Name: EMAIL_HOST_USER
               Value: !Ref 'EmailHostUser'
             - Name: EMAIL_HOST_PASSWORD
