@@ -110,22 +110,22 @@ Parameters:
     Description: SMTP Server port to send emails from
     Type: Number 
     Default: 578 
-  EmailHostUser:
+  SmtpHostUser:
     Description: SMTP Server User
     Type: String 
     Default: EmailUser 
-  EmailHostPassword:
+  SmtpHostPassword:
     Description: SMTP Server Password 
     Type: String 
     Default: SuPeRSecret 
-  EmailUseTLS:
+  SmtpUseTLS:
     Description: Using TLS for email? 
     Type: String 
     Default: false 
     AllowedValues:
       - true
       - false
-  EmailUseSSL:
+  SmtpUseSSL:
     Description: Using SSL for email? 
     Type: String 
     Default: false 
@@ -612,13 +612,13 @@ Resources:
             - Name: EMAIL_PORT
               Value: !Ref 'SmtpPort'
             - Name: EMAIL_HOST_USER
-              Value: !Ref 'EmailHostUser'
+              Value: !Ref 'SmtpHostUser'
             - Name: EMAIL_HOST_PASSWORD
-              Value: !Ref 'EmailHostPassword'
+              Value: !Ref 'SmtpHostPassword'
             - Name: EMAIL_USE_TLS
-              Value: !Ref 'EmailUseTLS'
+              Value: !Ref 'SmtpUseTLS'
             - Name: EMAIL_USE_SSL
-              Value: !Ref 'EmailUseSSL'
+              Value: !Ref 'SmtpUseSSL'
             - Name: DEFAULT_FROM_EMAIL
               Value: !Ref 'DefaultFromEmail'
   RDSSubnetGroup:
