@@ -49,21 +49,6 @@ Parameters:
     Default: ""
     Description: (Optional) An IAM role to give the service's containers if the code within needs to
                  access other AWS resources like S3 buckets, DynamoDB tables, etc
-  RDSNodeType:
-    Description: RDS node instance class, e.g. t3.micro(free tier). See https://aws.amazon.com/rds/instance-types/ 
-    Type: String
-    Default: db.t3.micro
-    ConstraintDescription: Node instance class not supported
-    AllowedValues:
-      - db.t3.micro
-      - db.t3.small
-      - db.t3.medium
-      - db.m5.large
-      - db.m5.xlarge
-      - db.m5.2xlarge
-      - db.m5.4xlarge
-      - db.m5.12xlarge
-      - db.m5.24xlarge
   CacheNodeType:
     Description: Cache node instance class, e.g. cache.t2.micro(free tier). See https://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/CacheNodes.SelectSize.html
     Type: String
@@ -146,7 +131,6 @@ Parameters:
   SentryDSN:
     Description: Your Sentry instance's DSN for where errors should be reported. This will default to Posthog's if not changed so we can help you debug 
     Type: String 
-
 
 Mappings:
   # Hard values for the subnet masks. These masks define
