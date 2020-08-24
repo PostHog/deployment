@@ -604,7 +604,7 @@ Resources:
             - Name: ALLOWED_IP_BLOCKS
               Value: !Ref 'AllowedIpBlocks' 
             - Name: SECRET_KEY
-              Value: Oh_PLz_chANGme
+              Value: '<randomly generated secret key>'
             - Name: DISABLE_SECURE_SSL_REDIRECT
               Value: !Ref 'DisableSecureSSLRedirect'
             - Name: EMAIL_HOST
