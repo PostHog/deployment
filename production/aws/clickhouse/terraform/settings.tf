@@ -10,27 +10,27 @@ variable "availability_zone" {
 
 variable "vpc_id" {
   description = "Your VPC ID"
-  default = "vpc-98172de1"
+  default = "vpc-54ebfa2e"
 }
 
 variable "subnet_id" {
   description = "Your Subnet ID"
-  default = "subnet-52b6ef08"
+  default = "subnet-5eec5250"
 }
 
 variable "ami_id" {
   description = "ClickHouse node AMI ID"
-  default = "ami-fd433e82"
+  default = "ami-0468cc028a4b6b80b"
 }
 
 variable "instance_type" {
-  description = "Your instance type"
-  default = "t2.medium"
+  description = "Clickhouse instance type"
+  default = "m5ad.12xlarge"
 }
 
 variable "root_block_device_volume_size" {
   description = "Size of the root volume in GB"
-  default = 20
+  default = 1000
 }
 
 variable "ssh_port" {
@@ -40,7 +40,7 @@ variable "ssh_port" {
 
 variable "key_name" {
   description = "Key pair name to get SSH access"
-  default = "ubuntu_key_pair"
+  default = "Jams2"
 }
 
 variable "ch_node_multiple_count" {

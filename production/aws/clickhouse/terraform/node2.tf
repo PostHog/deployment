@@ -30,32 +30,3 @@ resource "aws_instance" "ch_node_2" {
     Name = "ch_node_2"
   }
 }
-
-resource "aws_ebs_volume" "ch_ebs_volume_2" {
-  availability_zone = "${var.availability_zone}"
-  size = 120
-  #snapshot_id = 
-  encrypted = false
-  type = "gp2"
-  tags {
-    Name = "ch_ebs_volume_1"
-  }
-}
-
-resource "aws_volume_attachment" "ch_ebs_volume_att_2" {
-  device_name = "/dev/sdh"
-  volume_id   = "${aws_ebs_volume.ch_ebs_volume_2.id}"
-  instance_id = "${aws_instance.ch_node_2.id}"
-}
-
-output "ip_ch_node_2" {
-  value = "${aws_instance.ch_node_2.public_ip}"
-}
-
-output "id_ch_ebs_volume_2" {
-  value = "${aws_ebs_volume.ch_ebs_volume_2.id}"
-}
-
-output "arn_ch_ebs_volume_2" {
-  value = "${aws_ebs_volume.ch_ebs_volume_2.arn}"
-}
