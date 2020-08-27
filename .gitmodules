@@ -1,0 +1,6 @@
+[submodule "production/zookeeper/packer-aws-zookeeper"]
+	path = production/zookeeper/packer-aws-zookeeper
+	url = git@github.com:fscm/packer-aws-zookeeper.git
+[submodule "production/zookeeper/terraform-module-aws-zookeeper"]
+	path = production/zookeeper/terraform-module-aws-zookeeper
+	url = git@github.com:fscm/terraform-module-aws-zookeeper.git
