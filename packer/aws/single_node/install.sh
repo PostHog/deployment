@@ -10,6 +10,12 @@ sudo apt-get -y install docker-ce docker-ce-cli containerd.io
 sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
-git clone https://github.com/PostHog/deployment.git
-cd deployment/terraform/digitalocean/single_node
-sudo docker-compose -f docker-compose.do.yml up -d
+
+sudo echo "git clone https://github.com/PostHog/deployment.git && cd deployment/terraform/digitalocean/single_node && sudo docker-compose -f docker-compose.do.yml up --build -d" > /home/ubuntu/posthog-upgrade.sh
+chmod +x /home/ubuntu/posthog-upgrade.sh
+sudo sh /home/ubuntu/posthog-upgrade.sh
+
+(crontab -l 2>/dev/null; echo "@reboot sh /home/ubuntu/posthog-upgrade.sh") | crontab -
+
+rm -rf deployment
+
