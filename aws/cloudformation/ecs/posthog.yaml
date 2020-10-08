@@ -583,10 +583,7 @@ Resources:
           - !Ref "AWS::NoValue"
       ContainerDefinitions:
         - Name: !Ref 'AWS::StackName'
-          Command:
-            - "./bin/docker"
-          Cpu: !Ref 'ContainerCpu'
-          Memory: !Ref 'ContainerMemory'
+          Command: ["/bin/bash", "-c", "./bin/docker-migrate && ./bin/docker-server"]
           LogConfiguration:
             LogDriver: awslogs
             Options:
@@ -596,6 +593,74 @@ Resources:
           Image: !Ref 'ImageUrl'
           PortMappings:
             - ContainerPort: !Ref 'ContainerPort'
+          Environment:
+            - Name: DATABASE_URL
+              Value: !Join ['', ['postgres://posthog:posthogadmin@', !GetAtt [PosthogDB, Endpoint.Address], ':', !GetAtt [PosthogDB, Endpoint.Port], '/posthog']]
+            - Name: REDIS_URL
+              Value: !Join ['', ['redis://', !GetAtt [ElastiCacheCluster, RedisEndpoint.Address], ':', !GetAtt [ElastiCacheCluster, RedisEndpoint.Port] ]]
+            - Name: ALLOWED_IP_BLOCKS
+              Value: !Ref 'AllowedIpBlocks' 
+            - Name: SECRET_KEY
+              Value: '<randomly generated secret key>'
+            - Name: DISABLE_SECURE_SSL_REDIRECT
+              Value: !Ref 'DisableSecureSSLRedirect'
+            - Name: EMAIL_HOST
+              Value: !Ref 'SmtpHost'
+            - Name: EMAIL_PORT
+              Value: !Ref 'SmtpPort'
+            - Name: EMAIL_HOST_USER
+              Value: !Ref 'SmtpHostUser'
+            - Name: EMAIL_HOST_PASSWORD
+              Value: !Ref 'SmtpHostPassword'
+            - Name: EMAIL_USE_TLS
+              Value: !Ref 'SmtpUseTLS'
+            - Name: EMAIL_USE_SSL
+              Value: !Ref 'SmtpUseSSL'
+            - Name: DEFAULT_FROM_EMAIL
+              Value: !Ref 'DefaultFromEmail'
+        - Name: !Join [ !Ref 'AWS::StackName', '-worker-beat' ]
+          Command: ["./bin/docker-worker-beat"]
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-region: !Ref "AWS::Region" 
+              awslogs-group: !Ref 'AWS::StackName' 
+              awslogs-stream-prefix: !Ref 'AWS::StackName' 
+          Image: !Ref 'ImageUrl'
+          Environment:
+            - Name: DATABASE_URL
+              Value: !Join ['', ['postgres://posthog:posthogadmin@', !GetAtt [PosthogDB, Endpoint.Address], ':', !GetAtt [PosthogDB, Endpoint.Port], '/posthog']]
+            - Name: REDIS_URL
+              Value: !Join ['', ['redis://', !GetAtt [ElastiCacheCluster, RedisEndpoint.Address], ':', !GetAtt [ElastiCacheCluster, RedisEndpoint.Port] ]]
+            - Name: ALLOWED_IP_BLOCKS
+              Value: !Ref 'AllowedIpBlocks' 
+            - Name: SECRET_KEY
+              Value: '<randomly generated secret key>'
+            - Name: DISABLE_SECURE_SSL_REDIRECT
+              Value: !Ref 'DisableSecureSSLRedirect'
+            - Name: EMAIL_HOST
+              Value: !Ref 'SmtpHost'
+            - Name: EMAIL_PORT
+              Value: !Ref 'SmtpPort'
+            - Name: EMAIL_HOST_USER
+              Value: !Ref 'SmtpHostUser'
+            - Name: EMAIL_HOST_PASSWORD
+              Value: !Ref 'SmtpHostPassword'
+            - Name: EMAIL_USE_TLS
+              Value: !Ref 'SmtpUseTLS'
+            - Name: EMAIL_USE_SSL
+              Value: !Ref 'SmtpUseSSL'
+            - Name: DEFAULT_FROM_EMAIL
+              Value: !Ref 'DefaultFromEmail'
+        - Name: !Join [ !Ref 'AWS::StackName', '-worker-celery' ]
+          Command: ["./bin/docker-worker-celery"]
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-region: !Ref "AWS::Region" 
+              awslogs-group: !Ref 'AWS::StackName' 
+              awslogs-stream-prefix: !Ref 'AWS::StackName' 
+          Image: !Ref 'ImageUrl'
           Environment:
             - Name: DATABASE_URL
               Value: !Join ['', ['postgres://posthog:posthogadmin@', !GetAtt [PosthogDB, Endpoint.Address], ':', !GetAtt [PosthogDB, Endpoint.Port], '/posthog']]
