@@ -1,0 +1,23 @@
+name: Upload to S3
+
+on:
+  push:
+    # branches to consider in the event; optional, defaults to all
+    branches:
+      - master
+
+jobs:
+  update_cloudformation_template:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: jakejarvis/s3-sync-action@v0.5.1
+        name: Upload cloudformation template S3
+        with:
+          args: --acl public-read
+        env:
+          AWS_S3_BUCKET: 'deployments-posthog'
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+          SOURCE_DIR: 'aws/cloudformation/ecs'
+          DEST_DIR: 'cloudformation/ecs/fargate'

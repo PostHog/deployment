@@ -9,7 +9,7 @@ Description: This stack deploys a Fargate cluster that is in a VPC with both
 Parameters:
   ImageUrl:
     Type: String
-    Default: posthog/posthog:latest 
+    Default: posthog/posthog:latest
     Description: The url of a docker image that contains the application process that
                  will handle the traffic for this service
   ContainerPort:
@@ -50,7 +50,7 @@ Parameters:
     Description: (Optional) An IAM role to give the service's containers if the code within needs to
                  access other AWS resources like S3 buckets, DynamoDB tables, etc
   RDSNodeType:
-    Description: RDS node instance class, e.g. t3.micro(free tier). See https://aws.amazon.com/rds/instance-types/ 
+    Description: RDS node instance class, e.g. t3.micro(free tier). See https://aws.amazon.com/rds/instance-types/
     Type: String
     Default: db.t3.micro
     ConstraintDescription: Node instance class not supported
@@ -104,48 +104,48 @@ Parameters:
       - false
   SmtpHost:
     Description: SMTP Server to send emails from
-    Type: String 
-    Default: localhost 
+    Type: String
+    Default: localhost
   SmtpPort:
     Description: SMTP Server port to send emails from
-    Type: Number 
-    Default: 578 
+    Type: Number
+    Default: 578
   SmtpHostUser:
     Description: SMTP Server User
-    Type: String 
-    Default: EmailUser 
+    Type: String
+    Default: EmailUser
   SmtpHostPassword:
-    Description: SMTP Server Password 
-    Type: String 
-    Default: SuPeRSecret 
+    Description: SMTP Server Password
+    Type: String
+    Default: SuPeRSecret
   SmtpUseTLS:
-    Description: Using TLS for email/smtp? 
-    Type: String 
-    Default: false 
+    Description: Using TLS for email/smtp?
+    Type: String
+    Default: false
     AllowedValues:
       - true
       - false
   SmtpUseSSL:
-    Description: Using SSL for email/smtp? 
-    Type: String 
-    Default: false 
+    Description: Using SSL for email/smtp?
+    Type: String
+    Default: false
     AllowedValues:
       - true
       - false
   DisableSecureSSLRedirect:
-    Description: Set this to false if you are going to be using SSL 
-    Type: String 
-    Default: true 
+    Description: Set this to false if you are going to be using SSL
+    Type: String
+    Default: true
     AllowedValues:
       - true
       - false
   DefaultFromEmail:
-    Description: Who should the emails be from when Posthog sends email? 
-    Type: String 
-    Default: tim@posthog.com 
+    Description: Who should the emails be from when Posthog sends email?
+    Type: String
+    Default: tim@posthog.com
   SentryDSN:
-    Description: Your Sentry instance's DSN for where errors should be reported. This will default to Posthog's if not changed so we can help you debug 
-    Type: String 
+    Description: Your Sentry instance's DSN for where errors should be reported. This will default to Posthog's if not changed so we can help you debug
+    Type: String
 
 Mappings:
   # Hard values for the subnet masks. These masks define
@@ -417,10 +417,10 @@ Resources:
       HealthCheckIntervalSeconds: 60
       HealthCheckPath: /_health/
       HealthCheckProtocol: HTTP
-      HealthCheckTimeoutSeconds: 10 
+      HealthCheckTimeoutSeconds: 10
       HealthyThresholdCount: 10
       Name: !Join ['-', [!Ref 'AWS::StackName', 'drop-1']]
-      Port: !Ref ContainerPort 
+      Port: !Ref ContainerPort
       Protocol: HTTP
       UnhealthyThresholdCount: 10
       VpcId: !Ref 'VPC'
@@ -557,13 +557,13 @@ Resources:
                 - 'logs:CreateLogStream'
                 - 'logs:PutLogEvents'
               Resource: '*'
- 
-              
+
+
   LogGroup:
     Type: AWS::Logs::LogGroup
-    Properties: 
+    Properties:
       LogGroupName: !Ref 'AWS::StackName'
-      RetentionInDays: 7 
+      RetentionInDays: 7
   # The task definition. This is a simple metadata description of what
   # container to run, and what resource requirements it has.
   TaskDefinition:
@@ -587,9 +587,9 @@ Resources:
           LogConfiguration:
             LogDriver: awslogs
             Options:
-              awslogs-region: !Ref "AWS::Region" 
-              awslogs-group: !Ref 'AWS::StackName' 
-              awslogs-stream-prefix: !Ref 'AWS::StackName' 
+              awslogs-region: !Ref "AWS::Region"
+              awslogs-group: !Ref 'AWS::StackName'
+              awslogs-stream-prefix: !Ref 'AWS::StackName'
           Image: !Ref 'ImageUrl'
           PortMappings:
             - ContainerPort: !Ref 'ContainerPort'
@@ -599,7 +599,7 @@ Resources:
             - Name: REDIS_URL
               Value: !Join ['', ['redis://', !GetAtt [ElastiCacheCluster, RedisEndpoint.Address], ':', !GetAtt [ElastiCacheCluster, RedisEndpoint.Port] ]]
             - Name: ALLOWED_IP_BLOCKS
-              Value: !Ref 'AllowedIpBlocks' 
+              Value: !Ref 'AllowedIpBlocks'
             - Name: SECRET_KEY
               Value: '<randomly generated secret key>'
             - Name: DISABLE_SECURE_SSL_REDIRECT
@@ -618,14 +618,14 @@ Resources:
               Value: !Ref 'SmtpUseSSL'
             - Name: DEFAULT_FROM_EMAIL
               Value: !Ref 'DefaultFromEmail'
-        - Name: !Join [ !Ref 'AWS::StackName', '-worker-beat' ]
+        - Name: !Join [ '', [ !Ref 'AWS::StackName', '-worker-beat' ] ]
           Command: ["./bin/docker-worker-beat"]
           LogConfiguration:
             LogDriver: awslogs
             Options:
-              awslogs-region: !Ref "AWS::Region" 
-              awslogs-group: !Ref 'AWS::StackName' 
-              awslogs-stream-prefix: !Ref 'AWS::StackName' 
+              awslogs-region: !Ref "AWS::Region"
+              awslogs-group: !Ref 'AWS::StackName'
+              awslogs-stream-prefix: !Ref 'AWS::StackName'
           Image: !Ref 'ImageUrl'
           Environment:
             - Name: DATABASE_URL
@@ -633,7 +633,7 @@ Resources:
             - Name: REDIS_URL
               Value: !Join ['', ['redis://', !GetAtt [ElastiCacheCluster, RedisEndpoint.Address], ':', !GetAtt [ElastiCacheCluster, RedisEndpoint.Port] ]]
             - Name: ALLOWED_IP_BLOCKS
-              Value: !Ref 'AllowedIpBlocks' 
+              Value: !Ref 'AllowedIpBlocks'
             - Name: SECRET_KEY
               Value: '<randomly generated secret key>'
             - Name: DISABLE_SECURE_SSL_REDIRECT
@@ -652,14 +652,14 @@ Resources:
               Value: !Ref 'SmtpUseSSL'
             - Name: DEFAULT_FROM_EMAIL
               Value: !Ref 'DefaultFromEmail'
-        - Name: !Join [ !Ref 'AWS::StackName', '-worker-celery' ]
+        - Name: !Join ['', [ !Ref 'AWS::StackName' , '-worker-celery' ] ]
           Command: ["./bin/docker-worker-celery"]
           LogConfiguration:
             LogDriver: awslogs
             Options:
-              awslogs-region: !Ref "AWS::Region" 
-              awslogs-group: !Ref 'AWS::StackName' 
-              awslogs-stream-prefix: !Ref 'AWS::StackName' 
+              awslogs-region: !Ref "AWS::Region"
+              awslogs-group: !Ref 'AWS::StackName'
+              awslogs-stream-prefix: !Ref 'AWS::StackName'
           Image: !Ref 'ImageUrl'
           Environment:
             - Name: DATABASE_URL
@@ -667,7 +667,7 @@ Resources:
             - Name: REDIS_URL
               Value: !Join ['', ['redis://', !GetAtt [ElastiCacheCluster, RedisEndpoint.Address], ':', !GetAtt [ElastiCacheCluster, RedisEndpoint.Port] ]]
             - Name: ALLOWED_IP_BLOCKS
-              Value: !Ref 'AllowedIpBlocks' 
+              Value: !Ref 'AllowedIpBlocks'
             - Name: SECRET_KEY
               Value: '<randomly generated secret key>'
             - Name: DISABLE_SECURE_SSL_REDIRECT
@@ -691,7 +691,7 @@ Resources:
     Properties:
       DBSubnetGroupDescription: RDS subnet group
       SubnetIds:
-        - !Ref PrivateSubnetOne 
+        - !Ref PrivateSubnetOne
         - !Ref PrivateSubnetTwo
   PosthogDB:
     Type: AWS::RDS::DBInstance
@@ -701,7 +701,7 @@ Resources:
       VPCSecurityGroups:
         - !Ref 'FargateContainerSecurityGroup'
       AllocatedStorage: '5'
-      DBInstanceClass: !Ref RDSNodeType 
+      DBInstanceClass: !Ref RDSNodeType
       Engine: postgres
       MasterUsername: posthog
       MasterUserPassword: posthogadmin
@@ -770,9 +770,9 @@ Resources:
   ElasticacheSubnetGroup:
     Type: AWS::ElastiCache::SubnetGroup
     Properties:
-      Description: Subnet for Redis 
+      Description: Subnet for Redis
       SubnetIds:
-        - !Ref PrivateSubnetOne 
+        - !Ref PrivateSubnetOne
         - !Ref PrivateSubnetTwo
   ElastiCacheCluster:
     Type: AWS::ElastiCache::CacheCluster
@@ -780,7 +780,7 @@ Resources:
       AutoMinorVersionUpgrade: !Ref AutoMinorVersionUpgrade
       Engine: !Ref CacheEngine
       CacheNodeType: !Ref CacheNodeType
-      ClusterName : !Ref ECSCluster 
+      ClusterName : !Ref ECSCluster
       NumCacheNodes: !If [ IsRedis, 1, !Ref CacheNodeCount]
       CacheSubnetGroupName: !Ref ElasticacheSubnetGroup
       VpcSecurityGroupIds:
@@ -788,7 +788,7 @@ Resources:
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
- 
+
 Conditions:
   HasCustomRole: !Not [ !Equals [!Ref 'Role', ''] ]
   IsRedis: !Equals [ !Ref CacheEngine, redis]
@@ -892,7 +892,7 @@ Outputs:
     Export:
       Name: !Sub ${AWS::StackName}-ElastiCachePort
   ElastiCacheConnectionString:
-    Description: ElastiCache Pre-built Connection String  
+    Description: ElastiCache Pre-built Connection String
     Value: !Join ['', ['redis://', !GetAtt ElastiCacheCluster.RedisEndpoint.Address, ':', !GetAtt ElastiCacheCluster.RedisEndpoint.Port ]]
   PGConnectionString:
     Description: Connection string for the database
