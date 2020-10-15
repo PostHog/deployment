@@ -5,7 +5,50 @@ Description: This stack deploys a Fargate cluster that is in a VPC with both
              balancers. One is inside the public subnet, which can be used to
              send traffic to the containers in the private subnet, and one in
              the private subnet, which can be used for private internal traffic
-             between internal services. Specificaly for Posthog <3
+             between internal services. Specifically for Posthog <3
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: 'Posthog configuration'
+        Parameters:
+          - SecretKey
+          - AllowedIpBlocks
+          - AutoMinorVersionUpgrade
+          - DisableSecureSSLRedirect
+          - SentryDSN
+      - Label:
+          default: 'Instance, resource configuation'
+        Parameters:
+          - ImageUrl
+          - ContainerPort
+          - ContainerCpu
+          - ContainerMemory
+          - DesiredCount
+          - CacheNodeType
+          - CacheNodeCount
+          - CacheEngine
+          - RDSNodeType
+          - RDSMasterUser
+          - RDSMasterUserPassword
+      - Label:
+          default: 'AWS configuration'
+        Parameters:
+          - Path
+          - Priority
+          - Role
+      - Label:
+          default: 'Email configuration'
+        Parameters:
+          - DefaultFromEmail
+          - SmtpHost
+          - SmtpPort
+          - SmtpHostUser
+          - SmtpHostPassword
+          - SmtpUseTLS
+          - SmtpUseSSL
+
 Parameters:
   SecretKey:
     Type: String
