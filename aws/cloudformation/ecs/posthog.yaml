@@ -146,6 +146,15 @@ Parameters:
   SentryDSN:
     Description: Your Sentry instance's DSN for where errors should be reported. This will default to Posthog's if not changed so we can help you debug
     Type: String
+  RDSMasterUser:
+    Description: Master user for RDS database
+    Type: String
+    Default: posthog
+  RDSMasterUserPassword:
+    Description: Master user password for RDS database
+    Type: String
+    NoEcho: true
+    Default: posthogadmin
 
 Mappings:
   # Hard values for the subnet masks. These masks define
@@ -356,21 +365,21 @@ Resources:
     Properties:
       Description: Ingress from the public ALB
       GroupId: !Ref 'FargateContainerSecurityGroup'
-      IpProtocol: -1
+      IpProtocol: "-1"
       SourceSecurityGroupId: !Ref 'PublicLoadBalancerSG'
   EcsSecurityGroupIngressFromPrivateALB:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       Description: Ingress from the private ALB
       GroupId: !Ref 'FargateContainerSecurityGroup'
-      IpProtocol: -1
+      IpProtocol: "-1"
       SourceSecurityGroupId: !Ref 'PrivateLoadBalancerSG'
   EcsSecurityGroupIngressFromSelf:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
       Description: Ingress from other containers in the same security group
       GroupId: !Ref 'FargateContainerSecurityGroup'
-      IpProtocol: -1
+      IpProtocol: "-1"
       SourceSecurityGroupId: !Ref 'FargateContainerSecurityGroup'
 
   # Load balancers for getting traffic to containers.
@@ -394,7 +403,7 @@ Resources:
       SecurityGroupIngress:
           # Allow access to ALB from anywhere on the internet
           - CidrIp: 0.0.0.0/0
-            IpProtocol: -1
+            IpProtocol: "-1"
   PublicLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     DependsOn: GatewayAttachement
@@ -426,8 +435,6 @@ Resources:
       VpcId: !Ref 'VPC'
   PublicLoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
-    DependsOn:
-      - PublicLoadBalancer
     Properties:
       DefaultActions:
         - TargetGroupArn: !Ref 'DummyTargetGroupPublic'
@@ -449,7 +456,7 @@ Resources:
     Properties:
       Description: Only accept traffic from a container in the fargate container security group
       GroupId: !Ref 'PrivateLoadBalancerSG'
-      IpProtocol: -1
+      IpProtocol: "-1"
       SourceSecurityGroupId: !Ref 'FargateContainerSecurityGroup'
   PrivateLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
@@ -481,8 +488,6 @@ Resources:
       VpcId: !Ref 'VPC'
   PrivateLoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
-    DependsOn:
-      - PrivateLoadBalancer
     Properties:
       DefaultActions:
         - TargetGroupArn: !Ref 'DummyTargetGroupPrivate'
@@ -618,6 +623,8 @@ Resources:
               Value: !Ref 'SmtpUseSSL'
             - Name: DEFAULT_FROM_EMAIL
               Value: !Ref 'DefaultFromEmail'
+            - Name: SENTRY_DSN
+              Value: !Ref 'SentryDSN'
         - Name: !Join [ '', [ !Ref 'AWS::StackName', '-worker-beat' ] ]
           Command: ["./bin/docker-worker-beat"]
           LogConfiguration:
@@ -652,6 +659,8 @@ Resources:
               Value: !Ref 'SmtpUseSSL'
             - Name: DEFAULT_FROM_EMAIL
               Value: !Ref 'DefaultFromEmail'
+            - Name: SENTRY_DSN
+              Value: !Ref 'SentryDSN'
         - Name: !Join ['', [ !Ref 'AWS::StackName' , '-worker-celery' ] ]
           Command: ["./bin/docker-worker-celery"]
           LogConfiguration:
@@ -686,6 +695,8 @@ Resources:
               Value: !Ref 'SmtpUseSSL'
             - Name: DEFAULT_FROM_EMAIL
               Value: !Ref 'DefaultFromEmail'
+            - Name: SENTRY_DSN
+              Value: !Ref 'SentryDSN'
   RDSSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
     Properties:
@@ -703,9 +714,10 @@ Resources:
       AllocatedStorage: '5'
       DBInstanceClass: !Ref RDSNodeType
       Engine: postgres
-      MasterUsername: posthog
-      MasterUserPassword: posthogadmin
+      MasterUsername: !Ref RDSMasterUser
+      MasterUserPassword: !Ref RDSMasterUserPassword
     DeletionPolicy: Snapshot
+    UpdateReplacePolicy: Snapshot
 
   # The service. The service is a resource which allows you to run multiple
   # copies of a type of task, and gather up their logs and metrics, as well

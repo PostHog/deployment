@@ -1,0 +1,13 @@
+name: Lint CloudFormation Templates
+
+on: [push]
+jobs:
+  cloudformation-linter:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: cfn-
+      uses: scottbrenner/cfn-lint-action@master
+      with:
+        args: "aws/cloudformation/ecs/posthog.yaml"
