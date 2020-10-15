@@ -25,10 +25,12 @@
         "cloud-init status --wait",
         "apt -qqy update",
         "apt -qqy -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' full-upgrade",
-        "apt -qqy -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' install apt-transport-https ca-certificates curl git gnupg-agent software-properties-common",
-        "git clone https://github.com/PostHog/deployment.git",
-        "cd deployment/terraform/digitalocean/single_node",
-        "sudo docker-compose -f docker-compose.do.yml up -d"
+        "apt -qqy -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' install apt-transport-https ca-certificates curl git gnupg-agent software-properties-common cron",
+        "echo 'git clone https://github.com/PostHog/deployment.git && cd deployment/terraform/digitalocean/single_node && sudo docker-compose -f docker-compose.do.yml up --build -d' > posthog-upgrade.sh",
+        "chmod +x posthog-upgrade.sh",
+        "sudo sh posthog-upgrade.sh",
+        "(crontab -l 2>/dev/null; echo '@reboot sh ~/posthog-upgrade.sh') | crontab -",
+        "rm -rf deployment",
       ]
     },
     {
