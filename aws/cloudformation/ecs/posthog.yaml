@@ -146,6 +146,15 @@ Parameters:
   SentryDSN:
     Description: Your Sentry instance's DSN for where errors should be reported. This will default to Posthog's if not changed so we can help you debug
     Type: String
+  RDSMasterUser:
+    Description: Master user for RDS database
+    Type: String
+    Default: posthog
+  RDSMasterUserPassword:
+    Description: Master user password for RDS database
+    Type: String
+    NoEcho: true
+    Default: posthogadmin
 
 Mappings:
   # Hard values for the subnet masks. These masks define
@@ -705,8 +714,8 @@ Resources:
       AllocatedStorage: '5'
       DBInstanceClass: !Ref RDSNodeType
       Engine: postgres
-      MasterUsername: posthog
-      MasterUserPassword: posthogadmin
+      MasterUsername: !Ref RDSMasterUser
+      MasterUserPassword: !Ref RDSMasterUserPassword
     DeletionPolicy: Snapshot
     UpdateReplacePolicy: Snapshot
 
