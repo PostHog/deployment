@@ -7,6 +7,12 @@ Description: This stack deploys a Fargate cluster that is in a VPC with both
              the private subnet, which can be used for private internal traffic
              between internal services. Specificaly for Posthog <3
 Parameters:
+  SecretKey:
+    Type: String
+    NoEcho: true
+    MinLength: 16
+    Description: Secret key is used to encrypt cookies and password reset emails among other things.
+                 Read more here https://posthog.com/docs/configuring-posthog/securing-posthog#secret-key
   ImageUrl:
     Type: String
     Default: posthog/posthog:latest
@@ -601,7 +607,7 @@ Resources:
             - Name: ALLOWED_IP_BLOCKS
               Value: !Ref 'AllowedIpBlocks'
             - Name: SECRET_KEY
-              Value: '<randomly generated secret key>'
+              Value: !Ref 'SecretKey'
             - Name: DISABLE_SECURE_SSL_REDIRECT
               Value: !Ref 'DisableSecureSSLRedirect'
             - Name: EMAIL_HOST
@@ -635,7 +641,7 @@ Resources:
             - Name: ALLOWED_IP_BLOCKS
               Value: !Ref 'AllowedIpBlocks'
             - Name: SECRET_KEY
-              Value: '<randomly generated secret key>'
+              Value: !Ref 'SecretKey'
             - Name: DISABLE_SECURE_SSL_REDIRECT
               Value: !Ref 'DisableSecureSSLRedirect'
             - Name: EMAIL_HOST
@@ -669,7 +675,7 @@ Resources:
             - Name: ALLOWED_IP_BLOCKS
               Value: !Ref 'AllowedIpBlocks'
             - Name: SECRET_KEY
-              Value: '<randomly generated secret key>'
+              Value: !Ref 'SecretKey'
             - Name: DISABLE_SECURE_SSL_REDIRECT
               Value: !Ref 'DisableSecureSSLRedirect'
             - Name: EMAIL_HOST
