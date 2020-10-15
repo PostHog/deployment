@@ -13,6 +13,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: jakejarvis/s3-sync-action@v0.5.1
         name: Upload cloudformation template S3
+        with:
+          args: --acl public-read
         env:
           AWS_S3_BUCKET: 'deployments-posthog'
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
