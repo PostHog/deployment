@@ -2,15 +2,33 @@
 
 Dumping ground for different deployment configs.
 
-## Deployments that we currently support:
+You can find a full list of guides at https://posthog.com/docs/deployment
 
-- AWS CloudFormation
-  - Using ECS, Fargate, Postgres RDS, and Elasticache Redis
-- Kubernetes via [Helm Chart](https://github.com/PostHog/charts)
-- Terraform
-  - DigitalOcean - Single node install
-  - DigitalOcean - Distributed with Redis, Posgres, Load Balancer, LetsEncrypt, SSL/TLS only
-- Linode - Single node install
+## Deployments configured in this repo:
+
+### AWS CloudFormation
+
+https://posthog.com/docs/deployment/deploy-aws
+
+Using ECS, Fargate, Postgres RDS, and Elasticache Redis
+
+### Kubernetes
+
+https://posthog.com/docs/deployment/deploy-kubernetes
+
+Via [Helm Chart](https://github.com/PostHog/charts)
+
+### Terraform on Digital Ocean
+
+https://posthog.com/docs/deployment/deploy-digital-ocean
+
+- DigitalOcean - Single node install
+- DigitalOcean - Distributed with Redis, Posgres, Load Balancer, LetsEncrypt, SSL/TLS only
+
+### Linode
+
+https://posthog.com/docs/deployment/deploy-linode
+
 
 ## Deployments we would love to support:
 
