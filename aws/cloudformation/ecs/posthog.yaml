@@ -33,7 +33,8 @@ Parameters:
   ContainerMemory:
     Type: Number
     Default: 512
-    Description: How much memory in megabytes to give the container
+    Description: How much memory in megabytes to give the container. Valid values depend on ContainerCpu setting.
+                 Read more here https://docs.aws.amazon.com/AmazonECS/latest/userguide/fargate-task-defs.html#fargate-tasks-size
   Path:
     Type: String
     Default: "*"
