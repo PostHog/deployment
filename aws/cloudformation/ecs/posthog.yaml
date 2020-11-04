@@ -30,6 +30,7 @@ Metadata:
           - CacheNodeCount
           - CacheEngine
           - RDSNodeType
+          - RDSAllocatedStorage
           - RDSMasterUser
           - RDSMasterUserPassword
       - Label:
@@ -114,6 +115,15 @@ Parameters:
       - db.m5.4xlarge
       - db.m5.12xlarge
       - db.m5.24xlarge
+
+  RDSAllocatedStorage:
+    Description: Size of the database (GiB)
+    Type: Number
+    Default: 5
+    ConstraintDescription: Must be between 5 and 1024 GiB
+    MinValue: 5
+    MaxValue: 1024
+
   CacheNodeType:
     Description: Cache node instance class, e.g. cache.t2.micro(free tier). See https://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/CacheNodes.SelectSize.html
     Type: String
@@ -761,7 +771,7 @@ Resources:
       DBSubnetGroupName: !Ref RDSSubnetGroup
       VPCSecurityGroups:
         - !Ref 'FargateContainerSecurityGroup'
-      AllocatedStorage: '5'
+      AllocatedStorage: !Ref RDSAllocatedStorage
       DBInstanceClass: !Ref RDSNodeType
       Engine: postgres
       MasterUsername: !Ref RDSMasterUser
