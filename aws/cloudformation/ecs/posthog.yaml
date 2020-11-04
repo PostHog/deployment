@@ -242,6 +242,16 @@ Mappings:
     PrivateTwo:
       CIDR: '10.0.3.0/24'
 Resources:
+  SecretKey:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Description: Dynamically generated secret used by django
+      GenerateSecretString:
+        PasswordLength: 32
+        SecretStringTemplate: "{}"
+        GenerateStringKey: 'password'
+        ExcludePunctuation: true
+
   # VPC in which containers will be networked.
   # It has two public subnets, and two private subnets.
   # We distribute the subnets across the first two available subnets
@@ -666,7 +676,7 @@ Resources:
             - Name: ALLOWED_IP_BLOCKS
               Value: !Ref 'AllowedIpBlocks'
             - Name: SECRET_KEY
-              Value: !Ref 'SecretKey'
+              Value: !Join ['', ['{{resolve:secretsmanager:', !Ref SecretKey, ':SecretString:password}}' ]]
             - Name: DISABLE_SECURE_SSL_REDIRECT
               Value: !Ref 'DisableSecureSSLRedirect'
             - Name: EMAIL_HOST
@@ -702,7 +712,7 @@ Resources:
             - Name: ALLOWED_IP_BLOCKS
               Value: !Ref 'AllowedIpBlocks'
             - Name: SECRET_KEY
-              Value: !Ref 'SecretKey'
+              Value: !Join ['', ['{{resolve:secretsmanager:', !Ref SecretKey, ':SecretString:password}}' ]]
             - Name: DISABLE_SECURE_SSL_REDIRECT
               Value: !Ref 'DisableSecureSSLRedirect'
             - Name: EMAIL_HOST
@@ -738,7 +748,7 @@ Resources:
             - Name: ALLOWED_IP_BLOCKS
               Value: !Ref 'AllowedIpBlocks'
             - Name: SECRET_KEY
-              Value: !Ref 'SecretKey'
+              Value: !Join ['', ['{{resolve:secretsmanager:', !Ref SecretKey, ':SecretString:password}}' ]]
             - Name: DISABLE_SECURE_SSL_REDIRECT
               Value: !Ref 'DisableSecureSSLRedirect'
             - Name: EMAIL_HOST
