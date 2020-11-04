@@ -11,14 +11,6 @@ Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:
-          default: 'Posthog configuration'
-        Parameters:
-          - SecretKey
-          - AllowedIpBlocks
-          - AutoMinorVersionUpgrade
-          - DisableSecureSSLRedirect
-          - SentryDSN
-      - Label:
           default: 'Instance, resource configuation'
         Parameters:
           - ImageUrl
@@ -33,6 +25,13 @@ Metadata:
           - RDSAllocatedStorage
           - RDSMasterUser
           - RDSMasterUserPassword
+      - Label:
+          default: 'Posthog configuration'
+        Parameters:
+          - AllowedIpBlocks
+          - AutoMinorVersionUpgrade
+          - DisableSecureSSLRedirect
+          - SentryDSN
       - Label:
           default: 'AWS configuration'
         Parameters:
@@ -51,12 +50,6 @@ Metadata:
           - SmtpUseSSL
 
 Parameters:
-  SecretKey:
-    Type: String
-    NoEcho: true
-    MinLength: 16
-    Description: Secret key is used to encrypt cookies and password reset emails among other things.
-                 Read more here https://posthog.com/docs/configuring-posthog/securing-posthog#secret-key
   ImageUrl:
     Type: String
     Default: posthog/posthog:latest
