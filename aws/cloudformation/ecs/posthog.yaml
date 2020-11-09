@@ -26,6 +26,10 @@ Metadata:
           - RDSMasterUser
           - RDSMasterUserPassword
       - Label:
+          default: 'CloudWatch alerts'
+        Parameters:
+          - AlertEmail
+      - Label:
           default: 'Posthog configuration'
         Parameters:
           - AllowedIpBlocks
@@ -208,6 +212,11 @@ Parameters:
     Type: String
     NoEcho: true
     Default: posthogadmin
+
+  AlertEmail:
+    Description: (Optional) Email address that will receive alerts about instance status. You will receive a confirmation email after the deployment is complete, confirm it to subscribe to alerts.
+    Type: String
+    Default: ''
 
 Mappings:
   # Hard values for the subnet masks. These masks define
@@ -864,9 +873,57 @@ Resources:
         - Key: Name
           Value: !Ref AWS::StackName
 
+  # Alarms
+  PosthogAlarmTopic:
+    Type: "AWS::SNS::Topic"
+    Properties:
+      DisplayName: "Posthog Error Topic"
+      TopicName: "posthogErrors"
+
+  PosthogErrorEmailSubscription:
+    Condition: HasAlarmEmail
+    Type: 'AWS::SNS::Subscription'
+    Properties:
+      Endpoint: !Ref AlertEmail
+      Protocol: email
+      TopicArn: !Ref PosthogAlarmTopic
+
+  RDSDiskFullAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: "RDS database is nearly out of storage space - 1GB or less left"
+      AlarmActions:
+      - Ref: PosthogAlarmTopic
+      MetricName: FreeStorageSpace
+      Namespace: AWS/RDS
+      Statistic: Average
+      Period: 600 # 10 minutes
+      Threshold: 1000000000 # Less than 1GB
+      ComparisonOperator: LessThanThreshold
+      EvaluationPeriods: 1
+      OKActions:
+      - Ref: PosthogAlarmTopic
+
+  ElastiCacheMemoryFullAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: "Redis memory over the last 10 minutes is too low, your instance might not be ingesting events"
+      AlarmActions:
+      - Ref: PosthogAlarmTopic
+      MetricName: FreeableMemory
+      Namespace: AWS/RDS
+      Statistic: Average
+      Period: 600 # 10 minutes
+      Threshold: 640000000 # Less than 64MB
+      ComparisonOperator: LessThanThreshold
+      EvaluationPeriods: 1
+      OKActions:
+      - Ref: PosthogAlarmTopic
+
 Conditions:
   HasCustomRole: !Not [ !Equals [!Ref 'Role', ''] ]
   IsRedis: !Equals [ !Ref CacheEngine, redis]
+  HasAlarmEmail: !Not [!Equals [!Ref AlertEmail, '']]
 
 # These are the values output by the CloudFormation template. Be careful
 # about changing any of them, because of them are exported with specific
