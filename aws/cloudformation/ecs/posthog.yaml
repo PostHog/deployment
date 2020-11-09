@@ -214,7 +214,7 @@ Parameters:
     Default: posthogadmin
 
   AlertEmail:
-    Description: (Optional) Email address that will receive alerts about instance status. You will receive confirmation email after the deployment is complete, confirm it to subscribe for alerts.
+    Description: (Optional) Email address that will receive alerts about instance status. You will receive a confirmation email after the deployment is complete, confirm it to subscribe to alerts.
     Type: String
     Default: ''
 
@@ -891,7 +891,7 @@ Resources:
   RDSDiskFullAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
-      AlarmDescription: "RDS database is nearly out of space"
+      AlarmDescription: "RDS database is nearly out of storage space - 1GB or less left"
       AlarmActions:
       - Ref: PosthogAlarmTopic
       MetricName: FreeStorageSpace
@@ -907,7 +907,7 @@ Resources:
   ElastiCacheMemoryFullAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
-      AlarmDescription: "Redis memory over the last 10 minutes too low, events may not be ingested"
+      AlarmDescription: "Redis memory over the last 10 minutes is too low, your instance might not be ingesting events"
       AlarmActions:
       - Ref: PosthogAlarmTopic
       MetricName: FreeableMemory
