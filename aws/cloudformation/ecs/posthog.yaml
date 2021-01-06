@@ -775,6 +775,44 @@ Resources:
               Value: !Ref 'SentryDSN'
             - Name: DEPLOYMENT
               Value: Cloudformation
+        - Name: !Join ['', [ !Ref 'AWS::StackName' , '-plugins' ] ]
+          Command: ["./bin/plugin-server"]
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-region: !Ref "AWS::Region"
+              awslogs-group: !Ref 'AWS::StackName'
+              awslogs-stream-prefix: !Ref 'AWS::StackName'
+          Image: !Ref 'ImageUrl'
+          Environment:
+            - Name: DATABASE_URL
+              Value: !Join ['', ['postgres://posthog:posthogadmin@', !GetAtt [PosthogDB, Endpoint.Address], ':', !GetAtt [PosthogDB, Endpoint.Port], '/posthog']]
+            - Name: REDIS_URL
+              Value: !Join ['', ['redis://', !GetAtt [ElastiCacheCluster, RedisEndpoint.Address], ':', !GetAtt [ElastiCacheCluster, RedisEndpoint.Port] ]]
+            - Name: ALLOWED_IP_BLOCKS
+              Value: !Ref 'AllowedIpBlocks'
+            - Name: SECRET_KEY
+              Value: !Join ['', ['{{resolve:secretsmanager:', !Ref SecretKey, ':SecretString:password}}' ]]
+            - Name: DISABLE_SECURE_SSL_REDIRECT
+              Value: !Ref 'DisableSecureSSLRedirect'
+            - Name: EMAIL_HOST
+              Value: !Ref 'SmtpHost'
+            - Name: EMAIL_PORT
+              Value: !Ref 'SmtpPort'
+            - Name: EMAIL_HOST_USER
+              Value: !Ref 'SmtpHostUser'
+            - Name: EMAIL_HOST_PASSWORD
+              Value: !Ref 'SmtpHostPassword'
+            - Name: EMAIL_USE_TLS
+              Value: !Ref 'SmtpUseTLS'
+            - Name: EMAIL_USE_SSL
+              Value: !Ref 'SmtpUseSSL'
+            - Name: DEFAULT_FROM_EMAIL
+              Value: !Ref 'DefaultFromEmail'
+            - Name: SENTRY_DSN
+              Value: !Ref 'SentryDSN'
+            - Name: DEPLOYMENT
+              Value: Cloudformation
   RDSSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
     Properties:
