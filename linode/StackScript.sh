@@ -19,4 +19,5 @@ chmod +x /usr/local/bin/docker-compose
 # download and deploy PostHog
 git clone https://github.com/PostHog/deployment.git
 cd deployment/terraform/digitalocean/single_node
-docker-compose -f docker-compose.do.yml up -d
+cat docker-compose.do.yml | sed 's/DigitalOcean/Linode/g' > docker-compose.linode.yml
+docker-compose -f docker-compose.linode.yml up -d
