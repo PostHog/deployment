@@ -30,7 +30,7 @@ resource "digitalocean_droplet" "posthog-1" {
     inline = [
       "export PATH=$PATH:/usr/bin",
       "sudo apt -y install apt-transport-https ca-certificates git curl software-properties-common",
-      "docker run -d -t -i --restart always --publish 8000:8000 -e IS_DOCKER=true -e DISABLE_SECURE_SSL_REDIRECT=1 -e SECRET_KEY=${random_string.random.result} -e DATABASE_URL=postgres://${digitalocean_database_cluster.postgres-posthog.user}:${digitalocean_database_cluster.postgres-posthog.password}@${digitalocean_database_cluster.postgres-posthog.private_host}:${digitalocean_database_cluster.postgres-posthog.port}/${digitalocean_database_cluster.postgres-posthog.database} -e REDIS_URL=rediss://${digitalocean_database_cluster.redis-posthog.user}:${digitalocean_database_cluster.redis-posthog.password}@${digitalocean_database_cluster.redis-posthog.private_host}:${digitalocean_database_cluster.redis-posthog.port} posthog/posthog:latest"
+      "docker run -d -t -i --restart always --publish 8000:8000 -e IS_DOCKER=true -e DISABLE_SECURE_SSL_REDIRECT=1 -e SECRET_KEY=${random_string.random.result} -e DATABASE_URL=postgres://${digitalocean_database_cluster.postgres-posthog.user}:${digitalocean_database_cluster.postgres-posthog.password}@${digitalocean_database_cluster.postgres-posthog.private_host}:${digitalocean_database_cluster.postgres-posthog.port}/${digitalocean_database_cluster.postgres-posthog.database} -e REDIS_URL=rediss://${digitalocean_database_cluster.redis-posthog.user}:${digitalocean_database_cluster.redis-posthog.password}@${digitalocean_database_cluster.redis-posthog.private_host}:${digitalocean_database_cluster.redis-posthog.port} posthog/posthog:latest-release"
     ]
   }
 }
@@ -59,7 +59,7 @@ resource "digitalocean_droplet" "posthog-2" {
       "echo ${digitalocean_droplet.posthog-1.ipv4_address}",
       "export PATH=$PATH:/usr/bin",
       "sudo apt -y install apt-transport-https ca-certificates git curl software-properties-common",
-      "docker run -d -t -i --restart always --publish 8000:8000 -e IS_DOCKER=true -e DISABLE_SECURE_SSL_REDIRECT=1 -e SECRET_KEY=${random_string.random.result} -e DATABASE_URL=postgres://${digitalocean_database_cluster.postgres-posthog.user}:${digitalocean_database_cluster.postgres-posthog.password}@${digitalocean_database_cluster.postgres-posthog.private_host}:${digitalocean_database_cluster.postgres-posthog.port}/${digitalocean_database_cluster.postgres-posthog.database} -e REDIS_URL=rediss://${digitalocean_database_cluster.redis-posthog.user}:${digitalocean_database_cluster.redis-posthog.password}@${digitalocean_database_cluster.redis-posthog.private_host}:${digitalocean_database_cluster.redis-posthog.port} posthog/posthog:latest"
+      "docker run -d -t -i --restart always --publish 8000:8000 -e IS_DOCKER=true -e DISABLE_SECURE_SSL_REDIRECT=1 -e SECRET_KEY=${random_string.random.result} -e DATABASE_URL=postgres://${digitalocean_database_cluster.postgres-posthog.user}:${digitalocean_database_cluster.postgres-posthog.password}@${digitalocean_database_cluster.postgres-posthog.private_host}:${digitalocean_database_cluster.postgres-posthog.port}/${digitalocean_database_cluster.postgres-posthog.database} -e REDIS_URL=rediss://${digitalocean_database_cluster.redis-posthog.user}:${digitalocean_database_cluster.redis-posthog.password}@${digitalocean_database_cluster.redis-posthog.private_host}:${digitalocean_database_cluster.redis-posthog.port} posthog/posthog:latest-release"
     ]
   }
 }
