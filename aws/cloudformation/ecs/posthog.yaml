@@ -56,7 +56,7 @@ Metadata:
 Parameters:
   ImageUrl:
     Type: String
-    Default: posthog/posthog:latest
+    Default: posthog/posthog:latest-release
     Description: The url of a docker image that contains the application process that
                  will handle the traffic for this service
   ContainerPort:

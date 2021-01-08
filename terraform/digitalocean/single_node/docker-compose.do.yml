@@ -14,7 +14,7 @@ services:
     container_name: posthog_redis
     restart: always
   web:
-    image: posthog/posthog:latest
+    image: posthog/posthog:latest-release
     container_name: posthog_web
     restart: always
     ports:
