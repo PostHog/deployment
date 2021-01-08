@@ -26,6 +26,7 @@ services:
       REDIS_URL: "redis://redis:6379/"
       SECRET_KEY: "<randomly generated secret key>"
       DISABLE_SECURE_SSL_REDIRECT: 1
+      DEPLOYMENT: DigitalOcean
     depends_on:
       - db
       - redis

@@ -697,6 +697,8 @@ Resources:
               Value: !Ref 'DefaultFromEmail'
             - Name: SENTRY_DSN
               Value: !Ref 'SentryDSN'
+            - Name: DEPLOYMENT
+              Value: Cloudformation
         - Name: !Join [ '', [ !Ref 'AWS::StackName', '-worker-beat' ] ]
           Command: ["./bin/docker-worker-beat"]
           LogConfiguration:
@@ -733,6 +735,8 @@ Resources:
               Value: !Ref 'DefaultFromEmail'
             - Name: SENTRY_DSN
               Value: !Ref 'SentryDSN'
+            - Name: DEPLOYMENT
+              Value: Cloudformation
         - Name: !Join ['', [ !Ref 'AWS::StackName' , '-worker-celery' ] ]
           Command: ["./bin/docker-worker-celery"]
           LogConfiguration:
@@ -769,6 +773,8 @@ Resources:
               Value: !Ref 'DefaultFromEmail'
             - Name: SENTRY_DSN
               Value: !Ref 'SentryDSN'
+            - Name: DEPLOYMENT
+              Value: Cloudformation
   RDSSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
     Properties:
