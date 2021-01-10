@@ -3,9 +3,9 @@ Description: This stack deploys a Fargate cluster that is in a VPC with both
              public and private subnets. Containers can be deployed into either
              the public subnets or the private subnets, and there are two load
              balancers. One is inside the public subnet, which can be used to
-             send traffic to the containers in the private subnet, and one in
+             send traffic to the containers in the private subnet, and the other in
              the private subnet, which can be used for private internal traffic
-             between internal services. Specifically for Posthog <3
+             between internal services. Specifically for PostHog. <3
 
 Metadata:
   AWS::CloudFormation::Interface:
@@ -57,12 +57,11 @@ Parameters:
   ImageUrl:
     Type: String
     Default: posthog/posthog:latest-release
-    Description: The url of a docker image that contains the application process that
-                 will handle the traffic for this service
+    Description: The url of a docker image that contains the application process that will handle the traffic for this service
   ContainerPort:
     Type: Number
     Default: 8000
-    Description: What port number the application inside the docker container is binding to. Don't change this unless you know what you are doing.
+    Description: What port number the application inside the docker container is binding to. Don't change this unless you know what you are doing
   AllowedIpBlocks:
     Type: String
     Description: You can restrict access to PostHog by IP by passing ALLOWED_IP_BLOCKS. This is a comma separated list of CIDR blocks
@@ -122,7 +121,7 @@ Parameters:
     MaxValue: 1024
 
   CacheNodeType:
-    Description: Cache node instance class, e.g. cache.t2.micro(free tier). See https://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/CacheNodes.SelectSize.html
+    Description: Cache node instance class, e.g. cache.t2.micro (free tier). See https://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/CacheNodes.SelectSize.html
     Type: String
     Default: cache.t2.micro
     ConstraintDescription: Node instance class not supported
@@ -153,7 +152,7 @@ Parameters:
     Type: Number
     Default: 1
   AutoMinorVersionUpgrade:
-    Description: Whether or not minor version upgrades to the cache engine should be applied automatically during the maintenance window.
+    Description: Whether or not minor version upgrades to the cache engine should be applied automatically during the maintenance window
     Type: String
     Default: true
     AllowedValues:
@@ -176,14 +175,14 @@ Parameters:
     Type: String
     Default: SuPeRSecret
   SmtpUseTLS:
-    Description: Using TLS for email/smtp?
+    Description: Using TLS for email/SMTP?
     Type: String
     Default: false
     AllowedValues:
       - true
       - false
   SmtpUseSSL:
-    Description: Using SSL for email/smtp?
+    Description: Using SSL for email/SMTP?
     Type: String
     Default: false
     AllowedValues:
@@ -197,11 +196,11 @@ Parameters:
       - true
       - false
   DefaultFromEmail:
-    Description: Who should the emails be from when Posthog sends email?
+    Description: From whom should the PostHog system emails be from?
     Type: String
     Default: tim@posthog.com
   SentryDSN:
-    Description: Your Sentry instance's DSN for where errors should be reported. This will default to Posthog's if not changed so we can help you debug
+    Description: Your Sentry instance's DSN for where errors should be reported. If not changed, this will default to PostHog's, so that we can help you debug
     Type: String
   RDSMasterUser:
     Description: Master user for RDS database
@@ -214,7 +213,7 @@ Parameters:
     Default: posthogadmin
 
   AlertEmail:
-    Description: (Optional) Email address that will receive alerts about instance status. You will receive a confirmation email after the deployment is complete, confirm it to subscribe to alerts.
+    Description: (Optional) Email address that will receive alerts about instance status. You will receive a confirmation email after the deployment is complete, confirm it to subscribe to alerts
     Type: String
     Default: ''
 
@@ -247,7 +246,7 @@ Resources:
   SecretKey:
     Type: AWS::SecretsManager::Secret
     Properties:
-      Description: Dynamically generated secret used by django
+      Description: Dynamically generated secret used by Django
       GenerateSecretString:
         PasswordLength: 32
         SecretStringTemplate: "{}"
