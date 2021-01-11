@@ -38,3 +38,7 @@ https://posthog.com/docs/deployment/deploy-linode
 ## Contributing
 
 If you have a favorite config that you use we would to love include it here! We are always looking for fresh pull requests.
+
+## Questions?
+
+### [Join our Slack community.](https://join.slack.com/t/posthogusers/shared_invite/enQtOTY0MzU5NjAwMDY3LTc2MWQ0OTZlNjhkODk3ZDI3NDVjMDE1YjgxY2I4ZjI4MzJhZmVmNjJkN2NmMGJmMzc2N2U3Yjc3ZjI5NGFlZDQ)
