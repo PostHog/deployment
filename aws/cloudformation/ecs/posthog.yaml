@@ -843,7 +843,7 @@ Resources:
     Type: "AWS::SNS::Topic"
     Properties:
       DisplayName: "Posthog Error Topic"
-      TopicName: "posthogErrors"
+      TopicName: !Sub ${AWS::StackName}-errors
 
   PosthogErrorEmailSubscription:
     Condition: HasAlarmEmail
