@@ -201,6 +201,13 @@ Parameters:
     AllowedValues:
       - true
       - false
+  UseSecureCookies:
+    Description: Set this to True if you are using SSL or TLS 
+    Type: String
+    Default: false 
+    AllowedValues:
+      - true
+      - false
   DefaultFromEmail:
     Description: From whom should the PostHog system emails be from?
     Type: String
@@ -699,6 +706,8 @@ Resources:
               Value: !Join ['', ['{{resolve:secretsmanager:', !Ref SecretKey, ':SecretString:password}}' ]]
             - Name: DISABLE_SECURE_SSL_REDIRECT
               Value: !Ref 'DisableSecureSSLRedirect'
+            - Name: SECURE_COOKIES 
+              Value: !Ref 'UseSecureCookies'
             - Name: EMAIL_HOST
               Value: !Ref 'SmtpHost'
             - Name: EMAIL_PORT
@@ -735,6 +744,8 @@ Resources:
               Value: !Join ['', ['{{resolve:secretsmanager:', !Ref SecretKey, ':SecretString:password}}' ]]
             - Name: DISABLE_SECURE_SSL_REDIRECT
               Value: !Ref 'DisableSecureSSLRedirect'
+            - Name: SECURE_COOKIES 
+              Value: !Ref 'UseSecureCookies'
             - Name: EMAIL_HOST
               Value: !Ref 'SmtpHost'
             - Name: EMAIL_PORT
