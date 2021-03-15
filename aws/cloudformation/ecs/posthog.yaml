@@ -40,7 +40,6 @@ Metadata:
         Parameters:
           - AllowedIpBlocks
           - AutoMinorVersionUpgrade
-          - DisableSecureSSLRedirect
           - SentryDSN
       - Label:
           default: 'AWS configuration'
@@ -698,7 +697,7 @@ Resources:
             - Name: SECRET_KEY
               Value: !Join ['', ['{{resolve:secretsmanager:', !Ref SecretKey, ':SecretString:password}}' ]]
             - Name: DISABLE_SECURE_SSL_REDIRECT
-              Value: false
+              Value: 'false'
             - Name: SECURE_COOKIES 
               Value: !Ref 'UseSecureCookies'
             - Name: EMAIL_HOST
@@ -718,9 +717,9 @@ Resources:
             - Name: SENTRY_DSN
               Value: !Ref 'SentryDSN'
             - Name: IS_BEHIND_PROXY
-              Value: true
+              Value: 'true'
             - Name: TRUST_ALL_PROXIES
-              Value: true
+              Value: 'true'
             - Name: DEPLOYMENT
               Value: Cloudformation
         - Name: !Join ['', [ !Ref 'AWS::StackName' , '-worker' ] ]
@@ -742,7 +741,7 @@ Resources:
             - Name: SECRET_KEY
               Value: !Join ['', ['{{resolve:secretsmanager:', !Ref SecretKey, ':SecretString:password}}' ]]
             - Name: DISABLE_SECURE_SSL_REDIRECT
-              Value: false
+              Value: 'false'
             - Name: SECURE_COOKIES 
               Value: !Ref 'UseSecureCookies'
             - Name: EMAIL_HOST
@@ -762,9 +761,9 @@ Resources:
             - Name: SENTRY_DSN
               Value: !Ref 'SentryDSN'
             - Name: IS_BEHIND_PROXY
-              Value: true
+              Value: 'true'
             - Name: TRUST_ALL_PROXIES
-              Value: true
+              Value: 'true'
             - Name: DEPLOYMENT
               Value: Cloudformation
   RDSSubnetGroup:
