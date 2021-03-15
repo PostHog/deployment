@@ -717,6 +717,12 @@ Resources:
               Value: !Ref 'DefaultFromEmail'
             - Name: SENTRY_DSN
               Value: !Ref 'SentryDSN'
+            - Name: IS_BEHIND_PROXY
+              Value: true
+            - Name: TRUST_ALL_PROXIES
+              Value: true
+            - Name: DEPLOYMENT
+              Value: Cloudformation
         - Name: !Join ['', [ !Ref 'AWS::StackName' , '-worker' ] ]
           Command: ["./bin/docker-worker"]
           LogConfiguration:
@@ -755,6 +761,10 @@ Resources:
               Value: !Ref 'DefaultFromEmail'
             - Name: SENTRY_DSN
               Value: !Ref 'SentryDSN'
+            - Name: IS_BEHIND_PROXY
+              Value: true
+            - Name: TRUST_ALL_PROXIES
+              Value: true
             - Name: DEPLOYMENT
               Value: Cloudformation
   RDSSubnetGroup:
