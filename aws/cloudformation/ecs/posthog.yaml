@@ -40,7 +40,6 @@ Metadata:
         Parameters:
           - AllowedIpBlocks
           - AutoMinorVersionUpgrade
-          - DisableSecureSSLRedirect
           - SentryDSN
       - Label:
           default: 'AWS configuration'
@@ -191,13 +190,6 @@ Parameters:
     Description: Using SSL for email/SMTP?
     Type: String
     Default: false
-    AllowedValues:
-      - true
-      - false
-  DisableSecureSSLRedirect:
-    Description: Set this to false if you are going to be using SSL
-    Type: String
-    Default: true
     AllowedValues:
       - true
       - false
@@ -705,7 +697,7 @@ Resources:
             - Name: SECRET_KEY
               Value: !Join ['', ['{{resolve:secretsmanager:', !Ref SecretKey, ':SecretString:password}}' ]]
             - Name: DISABLE_SECURE_SSL_REDIRECT
-              Value: !Ref 'DisableSecureSSLRedirect'
+              Value: 'false'
             - Name: SECURE_COOKIES 
               Value: !Ref 'UseSecureCookies'
             - Name: EMAIL_HOST
@@ -724,6 +716,12 @@ Resources:
               Value: !Ref 'DefaultFromEmail'
             - Name: SENTRY_DSN
               Value: !Ref 'SentryDSN'
+            - Name: IS_BEHIND_PROXY
+              Value: 'true'
+            - Name: TRUST_ALL_PROXIES
+              Value: 'true'
+            - Name: DEPLOYMENT
+              Value: Cloudformation
         - Name: !Join ['', [ !Ref 'AWS::StackName' , '-worker' ] ]
           Command: ["./bin/docker-worker"]
           LogConfiguration:
@@ -743,7 +741,7 @@ Resources:
             - Name: SECRET_KEY
               Value: !Join ['', ['{{resolve:secretsmanager:', !Ref SecretKey, ':SecretString:password}}' ]]
             - Name: DISABLE_SECURE_SSL_REDIRECT
-              Value: !Ref 'DisableSecureSSLRedirect'
+              Value: 'false'
             - Name: SECURE_COOKIES 
               Value: !Ref 'UseSecureCookies'
             - Name: EMAIL_HOST
@@ -762,6 +760,10 @@ Resources:
               Value: !Ref 'DefaultFromEmail'
             - Name: SENTRY_DSN
               Value: !Ref 'SentryDSN'
+            - Name: IS_BEHIND_PROXY
+              Value: 'true'
+            - Name: TRUST_ALL_PROXIES
+              Value: 'true'
             - Name: DEPLOYMENT
               Value: Cloudformation
   RDSSubnetGroup:
