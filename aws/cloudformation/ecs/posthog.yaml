@@ -176,10 +176,14 @@ Parameters:
   RDSAllocatedStorage:
     Description: Size of the database (GiB)
     Type: Number
-    Default: 200
-    ConstraintDescription: Must be between 5 and 1024 GiB
-    MinValue: 200
-    MaxValue: 1024
+    Default: 20
+    ConstraintDescription: Must be between 20 and 65536 GiB for gp2 (SSD) storage.
+                           Must be between 5 and 3072 GiB for standarg (magnetic) storage.
+                           It's recommended to stick with gp2 and at least 20 GiB.
+                           See https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-rds-database-instance.html
+                           for AllocatedStorage options.
+    MinValue: 5
+    MaxValue: 65536
 
   CacheNodeType:
     Description: Cache node instance class, e.g. cache.t2.micro (free tier).
