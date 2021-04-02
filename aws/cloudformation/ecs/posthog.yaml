@@ -76,13 +76,27 @@ Parameters:
     Default: "0.0.0.0/0"
   ContainerCpu:
     Type: Number
-    Default: 256
-    Description: How much CPU to give the container. 1024 is 1 CPU
+    Default: 1024
+    Description: How much CPU to give the container. 1024 is 1 vCPU.
+                 The more virtual CPUs, the more memory is required.
+                 Read more here https://docs.aws.amazon.com/AmazonECS/latest/userguide/fargate-task-defs.html#fargate-tasks-size
+    AllowedValues:
+      - 512
+      - 1024
+      - 2048
+      - 4096
   ContainerMemory:
     Type: Number
-    Default: 1024
+    Default: 2048
     Description: How much memory in megabytes to give the container. Valid values depend on ContainerCpu setting.
                  Read more here https://docs.aws.amazon.com/AmazonECS/latest/userguide/fargate-task-defs.html#fargate-tasks-size
+    AllowedValues:
+      - 1024
+      - 2048
+      - 3072
+      - 4096
+      - 8192
+      - 16384
   Path:
     Type: String
     Default: "*"
