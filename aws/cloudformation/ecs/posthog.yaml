@@ -25,6 +25,7 @@ Metadata:
           default: 'Database configuration'
         Parameters:
           - RDSNodeType
+          - RDSAllocatedStorageType
           - RDSAllocatedStorage
           - RDSMasterUser
           - RDSMasterUserPassword
@@ -105,48 +106,119 @@ Parameters:
                  access other AWS resources like S3 buckets, DynamoDB tables, etc
   RDSNodeType:
     Description: RDS node instance class, e.g. t3.micro(free tier). See https://aws.amazon.com/rds/instance-types/
+                 If you're just testing PostHog out, the T3 is fine. If you want to run PostHog in production,
+                 you should at least run an M5. The new Graviton2 instances (M6g and R6g) are great in that they
+                 balance reduced cost for the processor with great performance.
+                 See https://aws.amazon.com/rds/postgresql/pricing/ for price information.
+                 Options are sorted by recommended type.
     Type: String
-    Default: db.t3.micro
+    Default: db.m6g.large
     ConstraintDescription: Node instance class not supported
     AllowedValues:
-      - db.t3.micro
-      - db.t3.small
-      - db.t3.medium
+      - db.m6g.large
+      - db.m6g.xlarge
+      - db.m6g.2xlarge
+      - db.m6g.4xlarge
+      - db.m6g.8xlarge
+      - db.m6g.12xlarge
+      - db.m6g.16xlarge
+      - db.r6g.large
+      - db.r6g.xlarge
+      - db.r6g.2xlarge
+      - db.r6g.4xlarge
+      - db.r6g.8xlarge
+      - db.r6g.12xlarge
+      - db.r6g.16xlarge
       - db.m5.large
       - db.m5.xlarge
       - db.m5.2xlarge
       - db.m5.4xlarge
       - db.m5.12xlarge
       - db.m5.24xlarge
+      - db.r5.large
+      - db.r5.xlarge
+      - db.r5.2xlarge
+      - db.r5.4xlarge
+      - db.r5.8xlarge
+      - db.r5.12xlarge
+      - db.r5.16xlarge
+      - db.r5.24xlarge
+      - db.t3.micro
+      - db.t3.small
+      - db.t3.medium
+      - db.t3.large
+      - db.t3.xlarge
+      - db.t3.2xlarge
+
+  RDSAllocatedStorageType:
+    Description: Type of storage engine
+    Type: String
+    Default: gp2
+    ConstraintDescription: standard is magnetic, gp2 is SSD
+    AllowedValues:
+      - standard
+      - gp2
 
   RDSAllocatedStorage:
     Description: Size of the database (GiB)
     Type: Number
-    Default: 5
+    Default: 200
     ConstraintDescription: Must be between 5 and 1024 GiB
-    MinValue: 5
+    MinValue: 200
     MaxValue: 1024
 
   CacheNodeType:
-    Description: Cache node instance class, e.g. cache.t2.micro (free tier). See https://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/CacheNodes.SelectSize.html
+    Description: Cache node instance class, e.g. cache.t2.micro (free tier).
+                 See https://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/CacheNodes.SelectSize.html
+                 Options are sorted by recommended type.
     Type: String
-    Default: cache.t2.micro
+    Default: cache.m6g.large
     ConstraintDescription: Node instance class not supported
     AllowedValues:
-      - cache.t2.micro
-      - cache.t2.small
-      - cache.t2.medium
+      - cache.m6g.large
+      - cache.m6g.xlarge
+      - cache.m6g.2xlarge
+      - cache.m6g.4xlarge
+      - cache.m6g.8xlarge
+      - cache.m6g.12xlarge
+      - cache.m6g.16xlarge
+      - cache.r6g.large
+      - cache.r6g.xlarge
+      - cache.r6g.2xlarge
+      - cache.r6g.4xlarge
+      - cache.r6g.8xlarge
+      - cache.r6g.12xlarge
+      - cache.r6g.16xlarge
+      - cache.m5.large
+      - cache.m5.xlarge
+      - cache.m5.2xlarge
+      - cache.m5.4xlarge
+      - cache.m5.12xlarge
+      - cache.m5.24xlarge
       - cache.m4.large
       - cache.m4.xlarge
       - cache.m4.2xlarge
       - cache.m4.4xlarge
       - cache.m4.10xlarge
+      - cache.r5.large
+      - cache.r5.xlarge
+      - cache.r5.2xlarge
+      - cache.r5.4xlarge
+      - cache.r5.12xlarge
+      - cache.r5.24xlarge
       - cache.r4.large
       - cache.r4.xlarge
       - cache.r4.2xlarge
       - cache.r4.4xlarge
       - cache.r4.8xlarge
       - cache.r4.16xlarge
+      - cache.t3.medium
+      - cache.t3.small
+      - cache.t3.micro
+      - cache.t2.medium
+      - cache.t2.small
+      - cache.t2.micro
+
   CacheEngine:
     Description: The underlying cache engine
     Type: String
@@ -796,6 +868,7 @@ Resources:
       VPCSecurityGroups:
         - !Ref 'FargateContainerSecurityGroup'
       AllocatedStorage: !Ref RDSAllocatedStorage
+      StorageType: !Ref RDSAllocatedStorageType
       DBInstanceClass: !Ref RDSNodeType
       Engine: postgres
       MasterUsername: !Ref RDSMasterUser
