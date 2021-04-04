@@ -793,6 +793,7 @@ Resources:
       MasterUsername: !Ref RDSMasterUser
       MasterUserPassword: !Ref RDSMasterUserPassword
       PubliclyAccessible: !Ref RDSPubliclyAvailable
+      DeletionProtection: true
       BackupRetentionPeriod: !Ref RDSBackupRetentionPeriod
     DeletionPolicy: Snapshot
     UpdateReplacePolicy: Snapshot
