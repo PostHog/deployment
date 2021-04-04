@@ -230,7 +230,7 @@ Parameters:
       - false
   RDSBackupRetentionPeriod:
     Description: The number of days for which automated backups are retained. Setting to 0 will disable automated backups (not recommended). 
-    Type: Integer
+    Type: Number
     Default: 7
     MaxValue: 35
     MinValue: 0
