@@ -28,8 +28,10 @@ Metadata:
           - RDSAllocatedStorage
           - RDSMasterUser
           - RDSMasterUserPassword
-          - RDSPubliclyAvailable
+          - RDSBackupRetentionPeriod
           - RDSRestoreDBSnapshotId
+          - RDSPubliclyAvailable
+          - AllowDatabaseDeletion
 
       - Label:
           default: 'CloudWatch alerts'
@@ -216,12 +218,10 @@ Parameters:
     Type: String
     NoEcho: true
     Default: posthogadmin
-
   RDSRestoreDBSnapshotId:
     Description: RDS snapshot to restore from. Read more at https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-rds-database-instance.html on updating DB instances
     Type: String
     Default: ''
-
   RDSPubliclyAvailable:
     Description: Make RDS instance available on the public web. Note that changing this on an already launched stack will create a new database from scratch.
     Type: String
@@ -229,7 +229,19 @@ Parameters:
     AllowedValues:
       - true
       - false
-
+  RDSBackupRetentionPeriod:
+    Description: The number of days for which automated backups are retained. Setting to 0 will disable automated backups (not recommended). 
+    Type: Number
+    Default: 7
+    MaxValue: 35
+    MinValue: 0
+  AllowDatabaseDeletion:
+    Description: If enabled, RDS database can be deleted. You might need to turn this on when e.g. changing an existing deployment to be publicly accessible, which requires replacing the deployment.
+    Type: String
+    Default: Disabled
+    AllowedValues:
+      - Disabled
+      - Enabled
   AlertEmail:
     Description: (Optional) Email address that will receive alerts about instance status. You will receive a confirmation email after the deployment is complete, confirm it to subscribe to alerts
     Type: String
@@ -789,6 +801,8 @@ Resources:
       MasterUsername: !Ref RDSMasterUser
       MasterUserPassword: !Ref RDSMasterUserPassword
       PubliclyAccessible: !Ref RDSPubliclyAvailable
+      DeletionProtection: !If [ RDSDeletionProtection, true, !Ref 'AWS::NoValue' ]
+      BackupRetentionPeriod: !Ref RDSBackupRetentionPeriod
     DeletionPolicy: Snapshot
     UpdateReplacePolicy: Snapshot
 
@@ -926,6 +940,7 @@ Conditions:
   IsRedis: !Equals [ !Ref CacheEngine, redis]
   HasAlarmEmail: !Not [!Equals [!Ref AlertEmail, '']]
   RestoreRDSSnapshotSelected: !Not [ !Equals [ !Ref RDSRestoreDBSnapshotId, '' ] ]
+  RDSDeletionProtection: !Equals [!Ref 'AllowDatabaseDeletion', 'Disabled']
 
 
 # These are the values output by the CloudFormation template. Be careful
