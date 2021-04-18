@@ -180,8 +180,12 @@ Parameters:
     ConstraintDescription: Must be between 20 and 65536 GiB for gp2 (SSD) storage.
                            Must be between 5 and 3072 GiB for standard (magnetic) storage.
                            It's recommended to stick with gp2 and at least 20 GiB.
-                           See https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-rds-database-instance.html
+                           See https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-rds-database-instance.html#aws-properties-rds-database-instance-properties
                            for AllocatedStorage options.
+
+                           WARNING - If you are upgrading PostHog and you want to switch from standard to
+                           gp2, you will need to create a snapshot first and provide its ARN to
+                           the RDSRestoreDBSnapshotId parameter.
     MinValue: 5
     MaxValue: 65536
 
