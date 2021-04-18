@@ -126,7 +126,7 @@ Parameters:
                  See https://aws.amazon.com/rds/postgresql/pricing/ for price information.
                  Options are sorted by recommended type.
     Type: String
-    Default: db.m6g.large
+    Default: db.t3.micro
     ConstraintDescription: Node instance class not supported
     AllowedValues:
       - db.m6g.large
