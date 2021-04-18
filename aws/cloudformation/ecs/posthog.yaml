@@ -188,9 +188,10 @@ Parameters:
   CacheNodeType:
     Description: Cache node instance class, e.g. cache.t2.micro (free tier).
                  See https://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/CacheNodes.SelectSize.html
-                 Options are sorted by recommended type.
+                 Options are sorted by recommended type. A cache.t2.micro is fine for testing
+                 or lower traffic, but consider an M6g for better price/performance.
     Type: String
-    Default: cache.m6g.large
+    Default: cache.t2.micro
     ConstraintDescription: Node instance class not supported
     AllowedValues:
       - cache.m6g.large
