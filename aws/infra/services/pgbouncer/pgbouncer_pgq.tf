@@ -1,36 +1,3 @@
-variable "environment" {
-  type    = string
-  default = "posthog-production"
-}
-
-variable "cluster_id" {
-  type = string
-}
-
-variable "subnets" {
-  type = list(string)
-}
-
-variable "vpc_id" {
-  type = string
-}
-
-variable "vpc_subnets" {
-  type = list(string)
-}
-
-variable "cluster_security_group_id" {
-  type = string
-}
-
-variable "ecs_task_role_arn" {
-  type = string
-}
-
-provider "aws" {
-  region = "us-east-1"
-}
-
 resource "aws_lb" "pgq-pgbouncer" {
   name               = "${var.environment}-pgq-pgbouncer"
   internal           = true
