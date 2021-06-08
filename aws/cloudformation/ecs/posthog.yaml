@@ -72,7 +72,7 @@ Parameters:
   AllowedIpBlocks:
     Type: String
     Description: You can restrict access to PostHog by IP by passing ALLOWED_IP_BLOCKS. This is a comma separated list of CIDR blocks
-    Default: "0.0.0.0/0"
+    Default: "0.0.0.0/0,::/0"
   ContainerCpu:
     Type: Number
     Default: 256
