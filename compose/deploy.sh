@@ -57,7 +57,6 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 # enable docker without sudo
 sudo usermod -aG docker ${USER}
-su - ${USER}
 
 # start up the stack (remember to have --build here for upgrades)
 rm -f docker-compose.yml
