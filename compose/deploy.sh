@@ -81,7 +81,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 sudo usermod -aG docker ${USER}
 
 # send log of this install for continued support!
-curl -v -L --header "Content-Type: application/json" -d '{
+curl -L --header "Content-Type: application/json" -d '{
     "api_key": "sTMFPsFhdP1Ssg",
     "properties": {"domain": "${DOMAIN}"},
     "type": "capture",
