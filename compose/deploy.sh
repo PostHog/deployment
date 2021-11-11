@@ -83,14 +83,18 @@ curl -o docker-compose.yml https://raw.githubusercontent.com/posthog/deployment/
 docker-compose -f docker-compose.yml stop | true
 docker-compose -f docker-compose.yml up --build -d
 
-echo "🎉🎉🎉 Done! 🎉🎉🎉"
-echo "You will need to wait ~5-10 minutes for things to settle down, migrations to finish, and TLS certs to be issued"
+echo "We will need to wait ~5-10 minutes for things to settle down, migrations to finish, and TLS certs to be issued"
+echo ""
+echo "⏳ Waiting for PostHog web to boot (this will take a few minutes)"
+bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:8000/_health)" != "200" ]]; do sleep 5; done' 
+echo "⌛️ PostHog looks up!"
+echo ""
+echo "🎉🎉🎉  Done! 🎉🎉🎉"
 echo ""
 echo "To stop the stack run `docker-compose stop`"
 echo "To start the stack again run `docker-compose start`"
 echo "If you have any issues at all delete everything in this directory and run the curl command again"
 echo ""
-
 echo "PostHog will be up at the location you provided!"
 echo "https://${DOMAIN}"
 echo ""
