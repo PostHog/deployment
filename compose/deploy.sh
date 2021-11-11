@@ -17,6 +17,7 @@ echo "If you do enter it now, otherwise just hit enter to continue"
 read SENTRY_DSN
 export SENTRY_DSN=$SENTRY_DSN
 echo "We will need sudo access so the next question is for you to give us superuser access"
+echo "Please enter your sudo password now:"
 sudo echo ""
 echo "Thanks! 🙏"
 echo "Ok! We'll take it from here 🚀"
@@ -54,7 +55,11 @@ echo "Setting up Docker Compose"
 sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose || true
 sudo chmod +x /usr/local/bin/docker-compose
 
+# enable docker without sudo
+sudo usermod -aG docker ${USER}
+su - ${USER}
+
 # start up the stack (remember to have --build here for upgrades)
 rm -f docker-compose.yml
 curl -o docker-compose.yml https://raw.githubusercontent.com/posthog/deployment/HEAD/compose/docker-compose.yml
-sudo -E docker-compose -f docker-compose.yml up --build -d
+docker-compose -f docker-compose.yml up --build -d
