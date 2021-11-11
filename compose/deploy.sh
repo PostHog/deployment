@@ -7,7 +7,7 @@ export POSTHOG_SECRET=`echo $RANDOM | md5sum | head -c 25`
 # Talk to the user
 echo "Welcome to the single instance PostHog installer 🦔"
 echo ""
-echo "⚠️ You really need 4gb or more of memory to run this stack ⚠️"
+echo "~️  You really need 4gb or more of memory to run this stack ⚠️"
 echo ""
 echo "Let's first start by getting the exact domain PostHog will be installed on"
 echo "Make sure that you have a Host A DNS record pointing to this instance!"
