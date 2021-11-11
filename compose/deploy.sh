@@ -51,8 +51,8 @@ sudo apt install -y docker-ce
 
 # setup docker-compose
 echo "Setting up Docker Compose"
-curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose || true
-chmod +x /usr/local/bin/docker-compose
+sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose || true
+sudo chmod +x /usr/local/bin/docker-compose
 
 # start up the stack (remember to have --build here for upgrades)
 rm -f docker-compose.yml
