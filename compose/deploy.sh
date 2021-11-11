@@ -49,5 +49,5 @@ chmod +x /usr/local/bin/docker-compose
 
 # start up the stack (remember to have --build here for upgrades)
 rm -f docker-compose.yml
-curl -o docker-compose.yml https://raw.githubusercontent.com/posthog/deployment/HEAD/compose/docker-compose.yml
+curl -o ./docker-compose.yml https://raw.githubusercontent.com/posthog/deployment/HEAD/compose/docker-compose.yml
 docker-compose -f docker-compose.yml up
