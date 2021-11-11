@@ -43,7 +43,7 @@ EOF
 # write entrypoint
 rm -rf compose
 mkdir -p compose
-echo > compose/start <<EOF
+cat > compose/start <<EOF
 #!/bin/bash
 python manage.py migrate
 python manage.py migrate_clickhouse
