@@ -16,17 +16,17 @@ echo "ie: test.posthog.net"
 read DOMAIN
 export DOMAIN=$DOMAIN
 echo "Ok we'll set up certs for https://$DOMAIN"
-echo "\n"
+echo ""
 echo "Do you have a Sentry DSN you would like for debugging should something go wrong?"
 echo "If you do enter it now, otherwise just hit enter to continue"
 read SENTRY_DSN
 export SENTRY_DSN=$SENTRY_DSN
-echo "\n"
+echo ""
 echo "We will need sudo access so the next question is for you to give us superuser access"
 echo "Please enter your sudo password now:"
 sudo echo ""
 echo "Thanks! 🙏"
-echo "\n"
+echo ""
 echo "Ok! We'll take it from here 🚀"
 
 # update apt cache
@@ -85,13 +85,13 @@ docker-compose -f docker-compose.yml up --build -d
 
 echo "🎉🎉🎉 Done! 🎉🎉🎉"
 echo "You will need to wait ~5-10 minutes for things to settle down, migrations to finish, and TLS certs to be issued"
-echo "\n"
+echo ""
 echo "To stop the stack run `docker-compose stop`"
 echo "To start the stack again run `docker-compose start`"
 echo "If you have any issues at all delete everything in this directory and run the curl command again"
-echo "\n"
+echo ""
 
 echo "PostHog will be up at the location you provided!"
 echo "https://${DOMAIN}"
-echo "\n\n"
+echo ""
 echo "**It's dangerous to go alone! Take this. 🦔**"
