@@ -77,14 +77,12 @@ services:
             - kafka:kafka
     web:
         <<: *worker
-        command: >
-            bash -c "python manage.py migrate
-                && python manage.py migrate_clickhouse
-                && ./bin/docker-server
-                && ./bin/docker-frontend"
+        command: ./compose/start 
         ports:
             - '8000:8000'
             - '8234:8234'
+        volumes:
+            - ./compose:/compose
     caddy:
         image: caddy
         restart: unless-stopped

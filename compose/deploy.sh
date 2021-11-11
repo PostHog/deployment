@@ -40,6 +40,18 @@ reverse_proxy http://web:8000
 }
 EOF
 
+# write entrypoint
+rm -rf compose
+mkdir -p compose
+echo > compose/start <<EOF
+#!/bin/bash
+python manage.py migrate
+python manage.py migrate_clickhouse
+./bin/docker-server
+./bin/docker-frontend
+EOF
+chmod +x compose/start
+
 # setup docker
 echo "Setting up Docker"
 sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
