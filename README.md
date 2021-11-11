@@ -1,17 +1,20 @@
-# PostHog deployment scripts
+# PostHog deployment options
 
-Dumping ground for different deployment configs.
+## If you want a quick install on an Ubuntu VM
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/posthog/deployment/HEAD/compose/deploy.sh)"
+```
+
 
 You can find a full list of guides at https://posthog.com/docs/deployment
 
 ## Deployments configured in this repo:
 
-### AWS CloudFormation
+### Docker Compose
 
-https://posthog.com/docs/deployment/deploy-aws
-
-Using ECS, Fargate, Postgres RDS, and Elasticache Redis
-
+Via [Docker Compose](https://docs.docker.com/compose/)
+Check out `/compose` directory
 ### Kubernetes
 
 https://posthog.com/docs/deployment/deploy-kubernetes
@@ -24,16 +27,6 @@ https://posthog.com/docs/deployment/deploy-digital-ocean
 
 - DigitalOcean - Single node install
 - DigitalOcean - Distributed with Redis, Posgres, Load Balancer, LetsEncrypt, SSL/TLS only
-
-### Linode
-
-https://posthog.com/docs/deployment/deploy-linode
-
-
-## Deployments we would love to support:
-
-- Ansible
-- Chef
 
 ## Contributing
 
