@@ -16,15 +16,18 @@ echo "Do you have a Sentry DSN you would like for debugging should something go 
 echo "If you do enter it now, otherwise just hit enter to continue"
 read SENTRY_DSN
 export SENTRY_DSN=$SENTRY_DSN
+echo "We will need sudo access so the next question is for you to give us superuser access"
+sudo echo ""
+echo "Thanks! 🙏"
 echo "Ok! We'll take it from here 🚀"
 
 # update apt cache
 echo "Grabbing latest apt caches"
-apt update
+sudo apt update
 
 # clone posthog
 echo "Installing PostHog 🦔 from Github"
-apt install -y git
+sudo apt install -y git
 rm -rf posthog
 git clone https://github.com/PostHog/posthog.git 
 
@@ -38,12 +41,12 @@ EOF
 
 # setup docker
 echo "Setting up Docker"
-apt install -y apt-transport-https ca-certificates curl software-properties-common
+sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
-apt update
-apt-cache policy docker-ce
-apt install -y docker-ce
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+sudo apt update
+sudo apt-cache policy docker-ce
+sudo apt install -y docker-ce
 
 
 # setup docker-compose
@@ -54,4 +57,4 @@ chmod +x /usr/local/bin/docker-compose
 # start up the stack (remember to have --build here for upgrades)
 rm -f docker-compose.yml
 curl -o docker-compose.yml https://raw.githubusercontent.com/posthog/deployment/HEAD/compose/docker-compose.yml
-docker-compose -f docker-compose.yml up --build -d
+sudo docker-compose -f docker-compose.yml up --build -d
