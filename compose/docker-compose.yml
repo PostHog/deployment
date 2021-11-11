@@ -77,7 +77,7 @@ services:
             - kafka:kafka
     web:
         <<: *worker
-        command: './bin/docker-server && ./bin/docker-frontend'
+        command: 'python manage.py migrate & python manage.py migrate_clickhouse & ./bin/docker-server && ./bin/docker-frontend'
         ports:
             - '8000:8000'
             - '8234:8234'
