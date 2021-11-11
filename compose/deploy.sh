@@ -80,6 +80,14 @@ sudo chmod +x /usr/local/bin/docker-compose
 # enable docker without sudo
 sudo usermod -aG docker ${USER}
 
+# send log of this install for continued support!
+curl -v -L --header "Content-Type: application/json" -d '{
+    "api_key": "sTMFPsFhdP1Ssg",
+    "properties": {"domain": "${DOMAIN}"},
+    "type": "capture",
+    "event": "magic_curl_install"
+}' https://app.posthog.com/batch/
+
 # start up the stack 
 rm -f docker-compose.yml
 curl -o docker-compose.yml https://raw.githubusercontent.com/posthog/deployment/HEAD/compose/docker-compose.yml
