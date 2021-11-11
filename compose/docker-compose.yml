@@ -77,7 +77,7 @@ services:
             - kafka:kafka
     web:
         <<: *worker
-        command: ./compose/start 
+        command: /compose/start 
         ports:
             - '8000:8000'
             - '8234:8234'
