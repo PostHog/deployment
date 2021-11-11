@@ -73,4 +73,12 @@ sudo usermod -aG docker ${USER}
 # start up the stack (remember to have --build here for upgrades)
 rm -f docker-compose.yml
 curl -o docker-compose.yml https://raw.githubusercontent.com/posthog/deployment/HEAD/compose/docker-compose.yml
+docker-compose -f docker-compose.yml stop | true
 docker-compose -f docker-compose.yml up --build -d
+
+echo "🎉🎉🎉 Done! 🎉🎉🎉"
+echo "You will need to wait ~5-10 minutes for things to settle down, migrations to finish, and TLS certs to be issued"
+echo "PostHog will be up at the location you provided!"
+echo "https://${DOMAIN}"
+echo "\n\n"
+echo "**It's dangerous to go alone! Take this. 🦔**"
