@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# Seed a secret
+export POSTHOG_SECRET=`echo $RANDOM | md5sum | head -c 25`
+
 # Talk to the user
 echo "Welcome to the single instance PostHog installer 🦔"
 echo "Let's first start by getting the exact domain PostHog will be installed on"
@@ -44,10 +47,10 @@ apt install -y docker-ce
 
 # setup docker-compose
 echo "Setting up Docker Compose"
-curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose || true
 chmod +x /usr/local/bin/docker-compose
 
 # start up the stack (remember to have --build here for upgrades)
 rm -f docker-compose.yml
-curl -o ./docker-compose.yml https://raw.githubusercontent.com/posthog/deployment/HEAD/compose/docker-compose.yml
+curl -o docker-compose.yml https://raw.githubusercontent.com/posthog/deployment/HEAD/compose/docker-compose.yml
 docker-compose -f docker-compose.yml up
