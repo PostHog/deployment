@@ -30,7 +30,7 @@ echo ""
 echo "Ok! We'll take it from here 🚀"
 
 echo "Making sure any stack that might exist is stopped"
-sudo -E docker-compose -f docker-compose.yml stop | true
+sudo -E docker-compose -f docker-compose.yml stop || true
 
 # update apt cache
 echo "Grabbing latest apt caches"
