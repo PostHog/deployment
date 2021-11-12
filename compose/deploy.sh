@@ -30,7 +30,7 @@ echo ""
 echo "Ok! We'll take it from here 🚀"
 
 echo "Making sure any stack that might exist is stopped"
-docker-compose -f docker-compose.yml stop | true
+sudo -E docker-compose -f docker-compose.yml stop | true
 
 # update apt cache
 echo "Grabbing latest apt caches"
@@ -91,7 +91,7 @@ curl -L --header "Content-Type: application/json" -d '{
 # start up the stack 
 rm -f docker-compose.yml
 curl -o docker-compose.yml https://raw.githubusercontent.com/posthog/deployment/HEAD/compose/docker-compose.yml
-docker-compose -f docker-compose.yml up -d
+sudo -E docker-compose -f docker-compose.yml up -d
 
 echo "We will need to wait ~5-10 minutes for things to settle down, migrations to finish, and TLS certs to be issued"
 echo ""
