@@ -83,10 +83,14 @@ sudo usermod -aG docker ${USER}
 # send log of this install for continued support!
 curl -L --header "Content-Type: application/json" -d '{
     "api_key": "sTMFPsFhdP1Ssg",
-    "properties": {"domain": "${DOMAIN}"},
-    "type": "capture",
-    "event": "magic_curl_install"
-}' https://app.posthog.com/batch/
+		"distinct_id": "${DOMAIN}",
+		"batch": [
+			{
+				"properties": {"domain": "${DOMAIN}"},
+				"event": "magic_curl_install"
+			}
+		]
+}' https://app.posthog.com/capture/
 
 # start up the stack 
 rm -f docker-compose.yml
