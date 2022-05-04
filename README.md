@@ -1,3 +1,5 @@
+# ⚠️ This Repository is archived. Please take a look at the supported self-hosted deployment options at [posthog.com/docs/self-host](https://posthog.com/docs/self-host) ⚠️
+
 # PostHog deployment options
 
 ## If you want a quick install on an Ubuntu VM
